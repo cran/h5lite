@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Get Started with h5lite</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Get Started with h5lite</h1>
+
+
+
+<div id="get-started-with-h5lite" class="section level1">
+<h1>Get Started with h5lite</h1>
+<p>The <code>h5lite</code> package provides a simplified, user-friendly
+interface for interacting with HDF5 files in R. While HDF5 is a complex
+hierarchical data format, <code>h5lite</code> is designed to feel
+familiar to R users by mapping HDF5 concepts directly to R’s native data
+structures.</p>
+<div id="hdf5-for-r-users" class="section level2">
+<h2>HDF5 for R Users</h2>
+<p>If you are new to HDF5, the easiest way to understand it is through R
+analogues. HDF5 files function like a file system within a single file,
+containing “groups” (folders) and “datasets” (files).</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="19%" />
+<col width="62%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">R Concept</th>
+<th align="left">HDF5 Concept</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>List</strong></td>
+<td align="left"><strong>Group</strong></td>
+<td align="left">A container that holds other objects (datasets or other
+groups).</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Vector / Matrix</strong></td>
+<td align="left"><strong>Dataset</strong></td>
+<td align="left">A multidimensional array of data (numeric, character,
+etc.).</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Data Frame</strong></td>
+<td align="left"><strong>Compound Dataset</strong></td>
+<td align="left">A table where each column can have a different data
+type.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Attribute</strong></td>
+<td align="left"><strong>Attribute</strong></td>
+<td align="left">Metadata attached to a specific object (e.g., units,
+timestamps).</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Factor</strong></td>
+<td align="left"><strong>Enum</strong></td>
+<td align="left">An integer vector with associated string labels.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="basic-usage" class="section level2">
+<h2>Basic Usage</h2>
+<p>The package uses two primary functions: <code>h5_write()</code> to
+save data and <code>h5_read()</code> to load it.</p>
+<div id="writing-numeric-data" class="section level3">
+<h3>Writing Numeric Data</h3>
+<p>You can write standard R arrays and vectors directly to an HDF5 file.
+<code>h5lite</code> automatically handles dimensions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># 1. 1D Array (Vector)</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.3</span>, <span class="fl">4.2</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">h5_write</span>(vec, file, <span class="st">&quot;examples/vector&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># 2. 2D Array (Matrix)</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="fu">h5_write</span>(mat, file, <span class="st">&quot;examples/matrix&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># 3. 3D Array</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">24</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">h5_write</span>(arr, file, <span class="st">&quot;examples/array_3d&quot;</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co"># 4. Scalar</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co"># By default, R treats length-1 vectors as arrays. </span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co"># Wrap in I() to write a true HDF5 scalar.</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">I</span>(<span class="dv">42</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="fu">h5_write</span>(val, file, <span class="st">&quot;examples/scalar&quot;</span>)</span></code></pre></div>
+<p><em>Note: While <code>h5lite</code> supports preserving row and
+column names for matrices and vectors, these examples omit them for
+simplicity. See <code>vignette(&#39;attributes-in-depth&#39;)</code> for details
+on how dimension names are stored.</em></p>
+</div>
+<div id="reading-data" class="section level3">
+<h3>Reading Data</h3>
+<p>Data is read back into its native R format.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;examples/matrix&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">print</span>(x)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; [1,]    1    4    7</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; [2,]    2    5    8</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; [3,]    3    6    9</span></span></code></pre></div>
+</div>
+</div>
+<div id="data-type-mapping" class="section level2">
+<h2>Data Type Mapping</h2>
+<p><code>h5lite</code> automatically selects the appropriate HDF5 data
+type based on the content of your R objects.</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="21%" />
+<col width="60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">R Data Type</th>
+<th align="left">HDF5 Equivalent</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Numeric</strong></td>
+<td align="left"><em>variable</em></td>
+<td align="left">Selects optimal type: <code>int8</code>,
+<code>float32</code>, etc.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Logical</strong></td>
+<td align="left"><code>H5T_STD_U8LE</code></td>
+<td align="left">Stored as 0 (FALSE) or 1 (TRUE)
+(<code>uint8</code>).</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Character</strong></td>
+<td align="left"><code>H5T_STRING</code></td>
+<td align="left">Variable or fixed-length UTF-8 strings.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Complex</strong></td>
+<td align="left"><code>H5T_COMPLEX</code></td>
+<td align="left">Native HDF5 2.0+ complex numbers.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Raw</strong></td>
+<td align="left"><code>H5T_OPAQUE</code></td>
+<td align="left">Raw bytes / binary data.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Factor</strong></td>
+<td align="left"><code>H5T_ENUM</code></td>
+<td align="left">Integer indices with label mapping.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>integer64</strong></td>
+<td align="left"><code>H5T_STD_I64LE</code></td>
+<td align="left">64-bit signed integers via <code>bit64</code>
+package.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>POSIXt</strong></td>
+<td align="left"><code>H5T_STRING</code></td>
+<td align="left">ISO 8601 string
+(<code>YYYY-MM-DDTHH:MM:SSZ</code>).</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>List</strong></td>
+<td align="left"><code>H5O_TYPE_GROUP</code></td>
+<td align="left">Recursive container structure.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Data Frame</strong></td>
+<td align="left"><code>H5T_COMPOUND</code></td>
+<td align="left">Table of mixed types.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>NULL</strong></td>
+<td align="left"><code>H5S_NULL</code></td>
+<td align="left">Creates a placeholder.</td>
+</tr>
+</tbody>
+</table>
+<p>You can use the <code>as</code> argument to explicitly set the HDF5
+data type for numeric, logical, and character vectors. See
+<code>vignette(&#39;data-types&#39;)</code> for details.</p>
+</div>
+<div id="complex-data-structures" class="section level2">
+<h2>Complex Data Structures</h2>
+<div id="lists-as-groups" class="section level3">
+<h3>Lists as Groups</h3>
+<p>R lists are naturally hierarchical, making them perfect for creating
+HDF5 groups.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">config =</span> <span class="fu">list</span>(<span class="at">id =</span> <span class="dv">1</span><span class="dt">L</span>, <span class="at">status =</span> <span class="st">&quot;active&quot;</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">data   =</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Creates a group &quot;/experiment&quot; containing &quot;config&quot; (group) and &quot;data&quot; (dataset)</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">h5_write</span>(my_list, file, <span class="st">&quot;experiment&quot;</span>) </span></code></pre></div>
+</div>
+<div id="data-frames-as-compound-datasets" class="section level3">
+<h3>Data Frames as Compound Datasets</h3>
+<p>Data frames are written as native HDF5 compound datasets, allowing
+efficient storage of tabular data with mixed types.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">val =</span> <span class="fu">c</span>(<span class="fl">1.1</span>, <span class="fl">2.2</span>, <span class="fl">3.3</span>, <span class="fl">4.4</span>, <span class="fl">5.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">h5_write</span>(df, file, <span class="st">&quot;study_data&quot;</span>)</span></code></pre></div>
+<p>For more details on these structures, including how to handle factors
+and nested lists, refer to <code>vignette(&#39;data-frames&#39;)</code>.</p>
+</div>
+</div>
+<div id="attributes" class="section level2">
+<h2>Attributes</h2>
+<p>Attributes are small pieces of metadata attached to objects.
+<code>h5lite</code> writes R attributes (like <code>units</code> or
+<code>description</code>) as HDF5 attributes.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Write a dataset</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, file, <span class="st">&quot;measurements&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Attach an attribute to it</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="st">&quot;meters&quot;</span>, file, <span class="st">&quot;measurements&quot;</span>, <span class="at">attr =</span> <span class="st">&quot;units&quot;</span>)</span></code></pre></div>
+<p>See <code>vignette(&#39;attributes-in-depth&#39;)</code> for information on
+reading specific attributes and how special R attributes like
+<code>dimnames</code> are handled.</p>
+</div>
+<div id="file-inspection" class="section level2">
+<h2>File Inspection</h2>
+<p>You can inspect the contents of an HDF5 file without reading the data
+into memory using <code>h5_ls()</code> and <code>h5_str()</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># List contents</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">h5_ls</span>(file)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;examples&quot;                 &quot;examples/vector&quot;         </span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;examples/matrix&quot;          &quot;examples/array_3d&quot;       </span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;examples/scalar&quot;          &quot;experiment&quot;              </span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;experiment/config&quot;        &quot;experiment/config/id&quot;    </span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;experiment/config/status&quot; &quot;experiment/data&quot;         </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; [11] &quot;study_data&quot;               &quot;measurements&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co"># Print structure tree (like R&#39;s str())</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="fu">h5_str</span>(file)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; /</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; ├── examples/</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; │   ├── vector &lt;float64 × 3&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; │   ├── matrix &lt;uint8 × 3 × 3&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; │   ├── array_3d &lt;uint8 × 4 × 3 × 2&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; │   └── scalar &lt;uint8 scalar&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; ├── experiment/</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; │   ├── config/</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; │   │   ├── id &lt;uint8 × 1&gt;</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; │   │   └── status &lt;utf8[6] × 1&gt;</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; │   └── data &lt;float64 × 10&gt;</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; ├── study_data &lt;compound[2] × 5&gt;</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; │   ├── $id &lt;uint8&gt;</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; │   └── $val &lt;float64&gt;</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; └── measurements &lt;uint8 × 10&gt;</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt;     └── @units &lt;utf8[6] × 1&gt;</span></span></code></pre></div>
+<p>For advanced file operations, including moving, deleting, and
+verifying objects, refer to
+<code>vignette(&#39;data-organization&#39;)</code>.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
