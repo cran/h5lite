@@ -1,5 +1,21 @@
+#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include "hdf5lib.h"
 #include "h5lite.h"
+
+
+SEXP C_register_hdf5_filters(void) {
+  hdf5lib_register_all_filters();
+  return R_NilValue;
+}
+
+// # nocov start
+SEXP C_destroy_hdf5_filters(void) {
+  hdf5lib_destroy_all_filters();
+  return R_NilValue;
+}
+// # nocov end
+
 
 /*
  * This structure defines the mapping between the C function names and the
@@ -7,6 +23,10 @@
  * The format is: {"r_name", (DL_FUNC) &c_function_name, number_of_arguments}.
  */
 static const R_CallMethodDef CallEntries[] = {
+  
+  /* init.c */
+  {"C_register_hdf5_filters", (DL_FUNC) &C_register_hdf5_filters, 0},
+  {"C_destroy_hdf5_filters",  (DL_FUNC) &C_destroy_hdf5_filters,  0},
   
   /* info.c */
   {"C_h5_typeof",      (DL_FUNC) &C_h5_typeof, 2},
@@ -19,6 +39,9 @@ static const R_CallMethodDef CallEntries[] = {
   {"C_h5_names",       (DL_FUNC) &C_h5_names, 3},
   {"C_h5_attr_names",  (DL_FUNC) &C_h5_attr_names, 2},
   
+  /* inspect.c */
+  {"C_h5_inspect",     (DL_FUNC) &C_h5_inspect, 2},
+  
   /* ls.c */
   {"C_h5_str", (DL_FUNC) &C_h5_str, 5},
   {"C_h5_ls",  (DL_FUNC) &C_h5_ls, 5},
@@ -30,7 +53,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"C_h5_delete_attr",  (DL_FUNC) &C_h5_delete_attr, 3},
   
   /* read.c */
-  {"C_h5_read_dataset",   (DL_FUNC) &C_h5_read_dataset, 4},
+  {"C_h5_read_dataset",   (DL_FUNC) &C_h5_read_dataset, 6},
   {"C_h5_read_attribute", (DL_FUNC) &C_h5_read_attribute, 4},
   
   /* write.c */

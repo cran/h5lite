@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Partial Reading</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Partial Reading</h1>
+
+
+
+<p>When working with large datasets, loading an entire HDF5 object into
+R’s memory isn’t always feasible—or necessary. <code>h5lite</code>
+provides a highly efficient “partial reading” feature using the
+<code>start</code> and <code>count</code> parameters in
+<code>h5_read()</code>.</p>
+<p>This vignette explains why partial reading is vastly more efficient
+than R’s standard indexing for large data, and how to use the “smart”
+<code>start</code> parameter across different data structures.</p>
+<div id="why-partial-reading-matters" class="section level2">
+<h2>Why Partial Reading Matters</h2>
+<p>If you are working with small datasets, partial reading isn’t
+strictly necessary. By default, <code>h5lite</code> chunks data in 1 MB
+blocks. For objects smaller than this, reading the whole dataset into
+memory and subsetting it in R is perfectly fine.</p>
+<p>However, when dealing with datasets that span gigabytes and exceed
+your system’s RAM, partial reading becomes essential.</p>
+<div id="the-hdf5-storage-model-chunking-and-compression" class="section level3">
+<h3>The HDF5 Storage Model: Chunking and Compression</h3>
+<p>To understand why <code>start</code> and <code>count</code> are
+designed the way they are, it helps to understand how HDF5 stores
+data.</p>
+<p>Unlike a standard CSV, HDF5 datasets are divided into “chunks” which
+are compressed individually. When you want to read a specific piece of
+data, the HDF5 library must locate the chunk containing that data,
+decompress the <em>entire</em> chunk into memory, and then extract your
+requested values.</p>
+<p>If you request a contiguous block of data, HDF5 only needs to
+decompress a handful of chunks. This is incredibly fast.</p>
+<p>However, if you try to use typical random-access indexing—for
+example, trying to extract a single column from a massive, row-oriented
+HDF5 matrix—the library has to decompress almost every single chunk in
+the dataset just to piece together that one column. To fetch a single
+column, it is often faster to read the entire dataset into R first and
+then subset it.</p>
+</div>
+<div id="designing-for-partial-reading" class="section level3">
+<h3>Designing for Partial Reading</h3>
+<p>If you are the one designing and writing the HDF5 file, you should
+actively consider optimizing your data storage for partial reading.
+Well-designed HDF5 files lay out large datasets in such a way that users
+can extract useful subsets while only decompressing a minimal number of
+internal chunks. For instance, if you anticipate that users will
+primarily extract data row-by-row, your data should be oriented so that
+rows are kept contiguous.</p>
+<p>The “smart” <code>start</code> parameter is purposefully designed to
+work seamlessly with datasets that are arranged optimally in this way,
+ensuring that the most efficient access patterns are also the easiest to
+type.</p>
+</div>
+<div id="memory-efficiency-of-start-and-count" class="section level3">
+<h3>Memory Efficiency of <code>start</code> and <code>count</code></h3>
+<p>Another massive benefit of partial reading is the memory footprint of
+the request itself.</p>
+<p>In standard R, if you want to extract the first ten million elements
+of a vector, you might write <code>vec[1:10000000]</code>. Behind the
+scenes, R expands <code>1:10000000</code> into an actual vector of ten
+million 32-bit integers. That index vector alone consumes nearly 40 MB
+of RAM just to be passed as an argument!</p>
+<p>In <code>h5lite</code>, fetching those same ten million elements
+looks like this:
+<code>h5_read(file, &quot;vec&quot;, start = 1, count = 10000000)</code>. Those
+two arguments are passed as simple numeric values, consuming just 16
+bytes.</p>
+<hr />
+</div>
+</div>
+<div id="the-smart-start-parameter" class="section level2">
+<h2>The “Smart” <code>start</code> Parameter</h2>
+<p>The <code>start</code> parameter is designed to relieve you from
+doing complex index math. Assuming your HDF5 file is well-designed and
+stores data in the most logical way it will be retrieved, <strong>90% of
+the time you only need to provide a single integer to
+<code>start</code></strong>.</p>
+<p>When you provide a single integer, <code>start</code> automatically
+applies itself to the most meaningful dimension of the dataset:</p>
+<ul>
+<li><strong>1D Vector:</strong> <code>start</code> specifies the
+<strong>element</strong>.</li>
+<li><strong>2D Matrix:</strong> <code>start</code> specifies the
+<strong>row</strong>.</li>
+<li><strong>2D Data Frame:</strong> <code>start</code> specifies the
+<strong>row</strong>.</li>
+<li><strong>3D Array:</strong> <code>start</code> specifies the
+<strong>2D matrix</strong>.</li>
+</ul>
+<p>The <code>count</code> parameter is an optional single integer that
+simply says, “Starting from <code>start</code>, how many of these
+structural units do you want to read?”</p>
+<div id="single-value-examples" class="section level3">
+<h3>Single-Value Examples</h3>
+<p>Here is how this intuitive behavior looks in practice across
+different shapes of data when fetching a block of units:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># --- 1. Vectors (Element-level targeting) ---</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">10</span>), file, <span class="st">&quot;my_vector&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Start at the 4th element, read 3 elements</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_vector&quot;</span>, <span class="at">start =</span> <span class="dv">4</span>, <span class="at">count =</span> <span class="dv">3</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; [1] 40 50 60</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># --- 2. Matrices (Row-level targeting) ---</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, <span class="at">nrow =</span> <span class="dv">10</span>, <span class="at">ncol =</span> <span class="dv">5</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="fu">h5_write</span>(mat, file, <span class="st">&quot;my_matrix&quot;</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co"># Start at row 5, read 3 complete rows (automatically spans all columns)</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_matrix&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>, <span class="at">count =</span> <span class="dv">3</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt; [1,]    5   15   25   35   45</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; [2,]    6   16   26   36   46</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; [3,]    7   17   27   37   47</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co"># --- 3. Data Frames (Row-level targeting) ---</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="fu">h5_write</span>(mtcars, file, <span class="st">&quot;my_mtcars&quot;</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co"># Start at row 10, read 5 complete rows</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_mtcars&quot;</span>, <span class="at">start =</span> <span class="dv">10</span>, <span class="at">count =</span> <span class="dv">5</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt;              mpg cyl  disp  hp drat   wt qsec vs am gear carb</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; Merc 280    19.2   6 167.6 123 3.92 3.44 18.3  1  0    4    4</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; Merc 280C   17.8   6 167.6 123 3.92 3.44 18.9  1  0    4    4</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt; Merc 450SE  16.4   8 275.8 180 3.07 4.07 17.4  0  0    3    3</span></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="co">#&gt; Merc 450SL  17.3   8 275.8 180 3.07 3.73 17.6  0  0    3    3</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; Merc 450SLC 15.2   8 275.8 180 3.07 3.78 18.0  0  0    3    3</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co"># --- 4. 3D Arrays (Matrix-level targeting) ---</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>arr <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">24</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)) </span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="fu">h5_write</span>(arr, file, <span class="st">&quot;my_array&quot;</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co"># Start at the 2nd matrix, read 2 complete matrices</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_array&quot;</span>, <span class="at">start =</span> <span class="dv">2</span>, <span class="at">count =</span> <span class="dv">2</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="co">#&gt; [1,]    7    9   11</span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co">#&gt; [2,]    8   10   12</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="co">#&gt; [1,]   13   15   17</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="co">#&gt; [2,]   14   16   18</span></span></code></pre></div>
+</div>
+<div id="dimension-simplification-exact-vs.-range-indexing" class="section level3">
+<h3>Dimension Simplification (Exact vs. Range Indexing)</h3>
+<p><code>h5lite</code> mimics R’s native subsetting behavior when it
+comes to preserving or dropping dimensions. This behavior is controlled
+entirely by whether you include the <code>count</code> argument.</p>
+<p><strong>Exact Indexing (Omitting <code>count</code>)</strong> If you
+provide <code>start</code> but omit <code>count</code>,
+<code>h5lite</code> assumes you are requesting an exact point index. It
+will read 1 unit and <strong>drop</strong> the targeted dimension to
+simplify the resulting data structure.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Read exactly row 5 of the matrix. </span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># The row dimension is dropped, returning a 1D vector.</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>row_vec <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;my_matrix&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>row_vec</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; [1]  5 15 25 35 45</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">class</span>(row_vec)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer&quot;</span></span></code></pre></div>
+<p><strong>Range Indexing (Providing <code>count</code>)</strong> If you
+explicitly provide <code>count</code> (even if <code>count = 1</code>),
+<code>h5lite</code> assumes you are reading a range. The dataset’s
+original dimensions are <strong>preserved</strong>. This is incredibly
+useful when programming dynamically and you need to guarantee that your
+matrix remains a matrix, even if your batch loop happens to fetch only a
+single row.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Read row 5, but signal a range request by setting count = 1.</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># The original geometry is preserved, returning a 1x5 matrix.</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>row_mat <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;my_matrix&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>, <span class="at">count =</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>row_mat</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; [1,]    5   15   25   35   45</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">class</span>(row_mat)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;matrix&quot; &quot;array&quot;</span></span></code></pre></div>
+</div>
+<div id="drilling-down-multi-value-start-and-n-dimensional-arrays" class="section level3">
+<h3>Drilling Down: Multi-Value <code>start</code> and N-Dimensional
+Arrays</h3>
+<p>While the single-value form covers most use cases, <code>start</code>
+is flexible enough to target lower-rank dimensions for unusual or highly
+specific extractions.</p>
+<p>If you need to extract a specific contiguous block <em>inside</em> a
+matrix or array, you can pass a vector of integers to
+<code>start</code>. When you do this, the <code>count</code> dropping
+rules apply to the <strong>last</strong> dimension you specify, while
+all preceding dimensions are treated as exact point indices and dropped
+unconditionally.</p>
+<p>To make this intuitive, <code>start</code> maps its values to the
+dataset’s dimensions in a specific priority order, targeting the
+“outermost” structural blocks first, and the specific rows/columns last.
+For any N-dimensional array, the mapping order is:</p>
+<ul>
+<li><strong>Priority Order:</strong>
+<code>Dimension N, Dimension N-1, ..., Dimension 3, Dimension 1 (Rows), Dimension 2 (Cols)</code></li>
+</ul>
+<p>For a 3D array, this means the first value targets the matrix, the
+second targets the row, and the third targets the column.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Matrix: Start at row 5, column 2, and read 3 elements along that row.</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># The row is an exact point index (dropped). The columns are a range (preserved).</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># Returns a 1D vector of length 3.</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_matrix&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>), <span class="at">count =</span> <span class="dv">3</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; [1] 15 25 35</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co"># Matrix: Extract exactly row 5, column 2. </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># Because count is omitted, the final dimension is also dropped.</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># Returns an unnamed scalar value.</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_matrix&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co"># 3D Array: Target matrix 2, row 1.</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co"># The matrix and row are exact point indices (dropped). </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># Returns a 1D vector containing the columns of that specific row.</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="fu">h5_read</span>(file, <span class="st">&quot;my_array&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; [1]  7  9 11</span></span></code></pre></div>
+<p><em>(Note: Data frames are a special case. Because HDF5 stores data
+frames as 1-dimensional lists of compound records, they do not have
+columns in the same structural way a matrix does. Therefore,
+<code>start</code> for a data frame must always be a single integer
+targeting the row. To get specific columns, read the rows you need
+first, then subset the columns in R).</em></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

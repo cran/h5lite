@@ -16,13 +16,13 @@ h5_write(c(1, 2, 3), file, "structure/vector")
 h5_write(matrix(1:9, 3, 3), file, "structure/matrix")
 
 ## -----------------------------------------------------------------------------
-# Standard integers -> int32
-h5_write(c(1L, 2L, 3L), file, "integers/clean")
+# Integers between 0 and 255 (uint8)
+h5_write(c(1L, 2L, 3L), file, "integers/small")
 
 # Integers with NA -> float64
 h5_write(c(1L, NA, 3L), file, "integers/with_na")
 
-# Force smaller type (int16)
+# Force larger type (int16)
 h5_write(1:100, file, "integers/short", as = "int16")
 
 ## -----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ h5_write(bools, file, "logicals/packed")
 
 ## -----------------------------------------------------------------------------
 # UTF-8 auto-detected fixed length
-h5_write(c("apple", "banana"), file, "strings/fixed_utf8", as = "utf8[]")
+h5_write(c("apple", "banana"), file, "strings/fixed_utf8")
 
 # ASCII fixed length (1 byte)
 h5_write(c("A", "B", "C"), file, "strings/fixed_ascii", as = "ascii[1]")
@@ -89,8 +89,11 @@ h5_write(df, file, "types/dataframe", as = c(
 h5_write(NULL, file, "placeholders/empty_slot")
 
 ## -----------------------------------------------------------------------------
-# Maximum compression
-h5_write(rnorm(1000), file, "data/max", compress = 9)
+# Maximum zlib compression
+h5_write(rnorm(1000), file, "data/max", compress = "gzip-9")
+
+# Szip Entropy Coding for discrete integer data
+h5_write(sample(1:5, 1000, replace = TRUE), file, "data/szip", compress = "szip-ec")
 
 ## ----include = FALSE----------------------------------------------------------
 unlink(file)

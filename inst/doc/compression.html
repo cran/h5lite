@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Compression</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Compression</h1>
+
+
+
+<p>HDF5 supports transparent data compression, allowing you to
+drastically reduce the file size of your datasets with minimal effort.
+While the HDF5 ecosystem has historically relied on standard
+<code>gzip</code> and <code>szip</code>, modern data pipelines require
+higher throughput and advanced techniques like lossy floating-point
+compression and optimized bitshuffling.</p>
+<p>Powered by <code>hdf5lib</code>, <code>h5lite</code> bundles an
+extensive suite of state-of-the-art compression filters natively,
+meaning you can use modern codecs like <strong>Blosc2</strong>,
+<strong>Zstandard (Zstd)</strong>, <strong>LZ4</strong>, and
+<strong>ZFP</strong> without installing any external system
+dependencies.</p>
+<p>This vignette covers how to configure these compression pipelines
+using the <code>h5_compression()</code> function, how to choose the
+right algorithm, how to tune chunk sizes, and how to inspect your
+results using <code>h5_inspect()</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span></code></pre></div>
+<div id="the-compress-argument-and-h5_compression" class="section level2">
+<h2>The <code>compress</code> Argument and
+<code>h5_compression()</code></h2>
+<p>For simple use cases, you can pass a configuration string directly to
+the <code>compress</code> argument of <code>h5_write()</code>.
+<code>h5lite</code> handles the underlying chunking requirements
+automatically.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Standard gzip compression at level 5</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;data/simple_gzip&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-5&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># High-performance Blosc2 with Zstandard</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;data/simple_blosc2&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;blosc2-zstd-5&quot;</span>)</span></code></pre></div>
+<p>For advanced control over the entire compression pipeline - including
+chunk sizing, pre-filters, data scaling, and checksums - use the
+<code>h5_compression()</code> function to build a configuration object
+to pass to <code>h5_write()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Advanced pipeline: LZ4 compression + optimal integer packing + Fletcher32 checksum</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>cmp <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">compress    =</span> <span class="st">&quot;lz4-9&quot;</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">int_packing =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">checksum    =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">chunk_size  =</span> <span class="dv">512</span> <span class="sc">*</span> <span class="dv">1024</span> <span class="co"># 512 KB chunks</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, file, <span class="st">&quot;data/advanced&quot;</span>, <span class="at">compress =</span> cmp)</span></code></pre></div>
+<div id="valid-compression-strings-reference" class="section level3">
+<h3>Valid Compression Strings Reference</h3>
+<p>The <code>compress</code> argument accepts specific string syntaxes
+to define both the codec and its operational level. The table below
+lists all valid combinations and indicates whether they require, permit,
+or forbid a level or parameter suffix.</p>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="47%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Suffix Rule</th>
+<th align="left">Valid Codec Strings</th>
+<th align="left">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Optional Level Suffix</strong><br><em>(Defaults
+applied if omitted)</em></td>
+<td align="left"><code>gzip</code>, <code>zstd</code>, <code>lz4</code>,
+<code>bzip2</code>, <code>bshuf-zstd</code><br><code>blosc1-lz4</code>,
+<code>blosc1-gzip</code>,
+<code>blosc1-zstd</code><br><code>blosc2-lz4</code>,
+<code>blosc2-gzip</code>, <code>blosc2-zstd</code></td>
+<td align="left"><code>&quot;zstd-7&quot;</code><br><code>&quot;blosc2-lz4&quot;</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>No Suffix Allowed</strong><br><em>(Strict exact
+match)</em></td>
+<td align="left"><code>none</code>, <code>lzf</code>,
+<code>snappy</code>, <code>bshuf-lz4</code><br><code>szip-nn</code>,
+<code>szip-ec</code>, <code>zfp-rev</code><br><code>blosc1</code>,
+<code>blosc1-snappy</code>, <code>blosc2</code>,
+<code>blosc2-ndlz</code></td>
+<td align="left"><code>&quot;bshuf-lz4&quot;</code><br><code>&quot;blosc2&quot;</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Required Parameter
+Suffix</strong><br><em>(Requires bits or tolerance)</em></td>
+<td align="left"><code>zfp-prec</code>, <code>zfp-rate</code>,
+<code>zfp-acc</code><br><code>blosc2-zfp-prec</code>,
+<code>blosc2-zfp-rate</code>, <code>blosc2-zfp-acc</code></td>
+<td align="left"><code>&quot;zfp-rate-8&quot;</code><br><code>&quot;zfp-acc-0.01&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="choosing-a-codec-modern-vs.-legacy" class="section level2">
+<h2>Choosing a Codec: Modern vs. Legacy</h2>
+<p>With so many options available, selecting the right codec depends on
+whether you are optimizing for extreme read/write speed, minimal file
+size, or universal compatibility.</p>
+<div id="blosc2-highly-recommended" class="section level3">
+<h3>1. Blosc2 (Highly Recommended)</h3>
+<p><strong>Blosc2</strong> is a high-performance meta-compressor
+optimized for binary data. It automatically handles multi-threading and
+applies a highly optimized internal bitshuffle algorithm before passing
+the data to a sub-compressor.</p>
+<ul>
+<li><p><strong><code>&quot;blosc2-zstd-[level]&quot;</code></strong>: Offers the
+best overall balance of extreme read/write speeds and excellent
+compression ratios. It effectively replaces standard gzip for modern
+analytical workloads.</p></li>
+<li><p><strong><code>&quot;blosc2-lz4-[level]&quot;</code></strong>: Exceptionally
+fast. Best used when read/write speed is the absolute highest priority
+and storage space is less of a concern.</p></li>
+</ul>
+</div>
+<div id="standalone-modern-codecs" class="section level3">
+<h3>2. Standalone Modern Codecs</h3>
+<p>If you prefer not to use the Blosc2 wrapper, you can call modern
+codecs directly:</p>
+<ul>
+<li><p><strong><code>&quot;zstd-[level]&quot;</code></strong>: Zstandard (levels
+1-22). Vastly superior to gzip in both speed and compression
+ratio.</p></li>
+<li><p><strong><code>&quot;lz4-[level]&quot;</code></strong>: Standard LZ4 (level
+0) or LZ4-HC (levels 1-12).</p></li>
+</ul>
+</div>
+<div id="gzip-the-universal-standard" class="section level3">
+<h3>3. Gzip (The Universal Standard)</h3>
+<ul>
+<li><strong><code>&quot;gzip-[level]&quot;</code></strong>: Levels 1-9 (default is
+5). Every compiled HDF5 library worldwide supports gzip. Use this
+<em>only</em> if you plan to share your <code>.h5</code> files with
+external collaborators using older Python/Julia tools, or if you are
+archiving them for long-term storage where universal compatibility is
+mandatory.</li>
+</ul>
+</div>
+<div id="legacy-codecs-obsolete-or-niche" class="section level3">
+<h3>4. Legacy Codecs (Obsolete or Niche)</h3>
+<ul>
+<li><p><strong><code>&quot;szip-nn&quot;</code> / <code>&quot;szip-ec&quot;</code></strong>:
+Historically fast for scientific data, provided safely here via the
+permissively licensed <code>libaec</code> library. Because the original
+library was frequently missing from legacy HDF5 distributions, szip
+never saw universal adoption and is now largely obsolete compared to
+Blosc2 or Zstd.</p></li>
+<li><p><strong><code>&quot;blosc1&quot;</code></strong>,
+<strong><code>&quot;snappy&quot;</code></strong>,
+<strong><code>&quot;lzf&quot;</code></strong>,
+<strong><code>&quot;bzip2&quot;</code></strong>: Included strictly to maintain
+backward compatibility, allowing you to read archived <code>.h5</code>
+files and write to legacy data processing pipelines. These
+early-generation algorithms lack the multi-threading optimizations,
+speeds, and compression ratios of modern alternatives, making them
+generally unsuitable for completely new datasets.</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="lossy-compression-zfp-and-scale-offset" class="section level2">
+<h2>Lossy Compression: ZFP and Scale-Offset</h2>
+<p>For massive numeric datasets, lossless compression may not provide
+enough space savings. <code>h5lite</code> supports two methods to
+discard mathematically insignificant precision in exchange for massive
+compression ratios.</p>
+<div id="zfp-floating-point-integer" class="section level3">
+<h3>ZFP (Floating-Point &amp; Integer)</h3>
+<p>ZFP is a specialized algorithm designed for high-throughput, lossy
+compression of numerical arrays. It offers incredible ratios but
+<strong>requires purely numeric values</strong>.</p>
+<p><em>(Note: The standalone <code>&quot;zfp-...&quot;</code> codecs support both
+integers and floats. However, if ZFP is wrapped inside Blosc2 via
+<code>&quot;blosc2-zfp-...&quot;</code>, it can only encode floating-point
+values).</em></p>
+<ul>
+<li><strong>Accuracy Mode (<code>&quot;zfp-acc-[tolerance]&quot;</code>):</strong>
+Guarantees that no decompressed value will differ from the original by
+more than the given absolute tolerance (e.g.,
+<code>&quot;zfp-acc-0.001&quot;</code>).</li>
+<li><strong>Precision Mode (<code>&quot;zfp-prec-[bits]&quot;</code>):</strong>
+Preserves a specific number of bits of precision (e.g.,
+<code>&quot;zfp-prec-16&quot;</code>).</li>
+<li><strong>Rate Mode (<code>&quot;zfp-rate-[bits]&quot;</code>):</strong> Forces
+the compressed data to use exactly a certain number of bits of storage
+per value (e.g., <code>&quot;zfp-rate-8&quot;</code>).</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Lossy compression: decompressed values will be accurate to within +/- 0.05</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>cmp_zfp <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(<span class="st">&quot;zfp-acc-0.05&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="fl">1e5</span>), file, <span class="st">&quot;data/zfp_floats&quot;</span>, <span class="at">compress =</span> cmp_zfp)</span></code></pre></div>
+</div>
+<div id="scale-offset-integer-packing-float-rounding" class="section level3">
+<h3>Scale-Offset (Integer Packing &amp; Float Rounding)</h3>
+<p>The native HDF5 Scale-Offset filter mathematically scales your data
+so it can be stored using fewer bits. It processes data one chunk at a
+time, and automatically reverses these operations when you read the file
+to reproduce your original values.</p>
+<ul>
+<li><p><strong>Integer Packing (<code>int_packing</code>):</strong> When
+you set <code>int_packing = TRUE</code>, HDF5 subtracts the minimum
+value in the chunk from all the other values. It then encodes these new,
+smaller values using the exact minimum number of bits necessary. For
+datasets with small ranges or lots of zeros, this saves a massive amount
+of space. (Alternatively, passing a number like
+<code>int_packing = 8</code> forces it to pack the data into exactly 8
+bits).</p></li>
+<li><p><strong>Float Rounding (<code>float_rounding</code>):</strong>
+When you pass an integer (like <code>float_rounding = 3</code>), HDF5
+multiplies all the floating-point values by 10^3 to shift the decimal
+point. It then rounds the results to the nearest whole integer. Once
+they are integers, it applies the exact same bit-packing method
+described above. When the data is decoded, the operations are run in
+reverse to restore the original values, less any exact precision lost
+during the initial rounding step.</p></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># 1. Integer Packing Example</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># A dataset with a small range of values (e.g., years 2000 to 2050)</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2000</span><span class="sc">:</span><span class="dv">2050</span>, <span class="dv">100000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># By default, R uses 32-bit integers. </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># With int_packing = TRUE, HDF5 subtracts 2000 from all values,</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># leaving numbers from 0 to 50, which fit perfectly into just 6 bits!</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>cmp_int <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(<span class="st">&quot;lz4-9&quot;</span>, <span class="at">int_packing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">h5_write</span>(years, file, <span class="st">&quot;data/packed_years&quot;</span>, <span class="at">compress =</span> cmp_int)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co"># 2. Float Rounding Example</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co"># Sensor data where anything beyond 2 decimal places is just noise</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>sensor_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, <span class="at">mean =</span> <span class="fl">98.6</span>, <span class="at">sd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co"># Multiplies by 10^2 (e.g., 98.614... -&gt; 9861.4...), rounds to 9861, and bit-packs.</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co"># When read back into R, it is automatically divided by 100 to restore 98.61.</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>cmp_float <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(<span class="st">&quot;zstd-5&quot;</span>, <span class="at">float_rounding =</span> <span class="dv">2</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">h5_write</span>(sensor_data, file, <span class="st">&quot;data/rounded_sensors&quot;</span>, <span class="at">compress =</span> cmp_float)</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="filter-interactions-invalid-combinations" class="section level2">
+<h2>Filter Interactions &amp; Invalid Combinations</h2>
+<p>Filters in HDF5 operate in a sequential pipeline, and certain filters
+destroy the underlying byte structures that downstream algorithms rely
+on. <code>h5_compression()</code> strictly enforces mutual exclusions
+and will throw an error if you attempt an invalid combination:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Shuffling vs. Scale-Offset:</strong> Pre-filters like
+Bitshuffle and Byte Shuffle rearrange the byte stream to group similar
+bits together for better compression. Scale-Offset
+(<code>int_packing</code> or <code>float_rounding</code>) packs data
+into non-standard bit widths, which destroys byte alignment. Therefore,
+<strong>all automatic shuffling is forcefully disabled if Scale-Offset
+is active</strong>.</p></li>
+<li><p><strong>Mathematical vs. Shuffling Codecs:</strong> ZFP and Szip
+perform mathematical compression directly on raw numerical values. They
+will completely fail or corrupt if the bitstream is rearranged
+beforehand. <strong>Do not combine ZFP or Szip with Scale-Offset,
+Bitshuffle, or Blosc2 pre-filters.</strong></p></li>
+<li><p><strong>String Data Limitations:</strong> Szip and ZFP cannot be
+applied to character vectors. String compression relies on standard
+algorithms like <code>gzip</code> or <code>zstd</code>, and only works
+on <em>fixed-length</em> strings. Variable-length strings (such as those
+containing <code>NA</code> values) cannot be compressed by chunk filters
+at all.</p></li>
+</ol>
+<hr />
+</div>
+<div id="tuning-chunk-size" class="section level2">
+<h2>Tuning Chunk Size</h2>
+<p>HDF5 does not compress a dataset as one monolithic block. Instead, it
+divides the dataset into smaller “chunks” and compresses each
+independently.</p>
+<p>By default, <code>h5_compression()</code> targets a <strong>1 MB
+chunk size</strong> (<code>chunk_size = 1048576</code>), which is an
+excellent default. However, you should manually tune this depending on
+your specific access patterns:</p>
+<ul>
+<li><p><strong>Too Small (&lt; 10 KB):</strong> Imposes huge metadata
+overhead. The internal HDF5 B-tree will bloat the file size, and the
+compression algorithms won’t have enough data to identify repeating
+patterns.</p></li>
+<li><p><strong>Too Large (&gt; 50 MB):</strong> If you only want to read
+a tiny slice (e.g., 10 rows) of your dataset, HDF5 is forced to load and
+decompress the <em>entire chunk</em> containing those rows into memory.
+Overly large chunks cause massive read latency for subsetting
+operations.</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Optimizing for reading small, 100KB slices at a time</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>cmp_chunk <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(<span class="st">&quot;blosc2-zstd-5&quot;</span>, <span class="at">chunk_size =</span> <span class="dv">102400</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">10000</span>), <span class="dv">100</span>, <span class="dv">100</span>), file, <span class="st">&quot;data/tuned_chunks&quot;</span>, <span class="at">compress =</span> cmp_chunk)</span></code></pre></div>
+<hr />
+</div>
+<div id="evaluating-results-with-h5_inspect" class="section level2">
+<h2>Evaluating Results with <code>h5_inspect()</code></h2>
+<p>It can be difficult to know exactly how well your compression
+strategy is working. The <code>h5_inspect()</code> function allows you
+to peek under the hood of any dataset, revealing its storage layout,
+chunk dimensions, the exact filter pipeline applied, and the resulting
+compression ratio.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Write some highly compressible (sequential) integer data</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>cmp_pack <span class="ot">&lt;-</span> <span class="fu">h5_compression</span>(<span class="st">&#39;lz4-9&#39;</span>, <span class="at">int_packing =</span> <span class="cn">TRUE</span>, <span class="at">checksum =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">matrix</span>(<span class="dv">5001</span><span class="sc">:</span><span class="dv">5100</span>, <span class="dv">10</span>, <span class="dv">10</span>), file, <span class="st">&quot;inspect/packed_mtx&quot;</span>, <span class="at">compress =</span> cmp_pack)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># Inspect the dataset&#39;s properties</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="fu">h5_inspect</span>(file, <span class="st">&quot;inspect/packed_mtx&quot;</span>)</span></code></pre></div>
+<p><strong>Output:</strong></p>
+<pre class="text"><code>&lt;HDF5 Dataset Properties&gt;
+  Type:    uint16              Size:    200.00 B
+  Layout:  chunked             Disk:    120.00 B
+  Chunks:  [10 x 10]           Ratio:   1.67x
+  Pipeline: scaleoffset -&gt; lz4 -&gt; fletcher32</code></pre>
+<p>You can use this compression ratio readout to iteratively test
+different <code>h5_compression()</code> configurations until you find
+the perfect balance for your specific data.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Clean up</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">unlink</span>(file)</span></code></pre></div>
+<p><em>For additional details about these codecs and the underlying
+library, please see <a href="https://cmmr.github.io/hdf5lib/articles/compression.html">https://cmmr.github.io/hdf5lib/articles/compression.html</a>.</em></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

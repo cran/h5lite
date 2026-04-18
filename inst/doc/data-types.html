@@ -470,13 +470,13 @@ fractional values default to <code>float64</code>.</li>
 <code>int[8|16|32|64]</code>, <code>uint[8|16|32|64]</code>,
 <code>float[16|32|64]</code>, or <code>bfloat16</code>.</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Standard integers -&gt; int32</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;integers/clean&quot;</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Integers between 0 and 255 (uint8)</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;integers/small&quot;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Integers with NA -&gt; float64</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="cn">NA</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;integers/with_na&quot;</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co"># Force smaller type (int16)</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co"># Force larger type (int16)</span></span>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, file, <span class="st">&quot;integers/short&quot;</span>, <span class="at">as =</span> <span class="st">&quot;int16&quot;</span>)</span></code></pre></div>
 </div>
 <div id="bit-integers-integer64" class="section level2">
@@ -526,6 +526,9 @@ package.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>bools <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">h5_write</span>(bools, file, <span class="st">&quot;logicals/packed&quot;</span>)</span></code></pre></div>
+</div>
+<div id="character-data" class="section level2">
+<h2>Character Data</h2>
 <p>HDF5 supports two methods for storing strings. By default
 (<code>as = &quot;auto&quot;</code>), <code>h5lite</code> chooses the best
 approach:</p>
@@ -547,20 +550,19 @@ without <code>NA</code> to allow for compression.</li>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var_utf8&quot;</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># ASCII variable length</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii&quot;</span>)</span></code></pre></div>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/var_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii&quot;</span>)</span></code></pre></div>
 </div>
 <div id="fixed-length" class="section level3">
 <h3><strong>Fixed-Length:</strong></h3>
-<p>Use <code>as = &quot;ascii[10]&quot;</code>/<code>as = &quot;utf8[10]&quot;</code>
-(explicit size=10) or
-<code>as = &quot;ascii[]&quot;</code>/<code>as = &quot;utf8[]&quot;</code> (auto-detect max
-length).</p>
+<p>Use <code>as = &quot;ascii[10]&quot;</code> / <code>as = &quot;utf8[10]&quot;</code>
+(explicit size=10) or <code>as = &quot;ascii[]&quot;</code> /
+<code>as = &quot;utf8[]&quot;</code> (auto-detect max length).</p>
 <ul>
 <li>Compressible: <strong>YES</strong></li>
 <li>Handles <code>NA</code>: <strong>NO</strong></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># UTF-8 auto-detected fixed length</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>), file, <span class="st">&quot;strings/fixed_utf8&quot;</span>, <span class="at">as =</span> <span class="st">&quot;utf8[]&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>), file, <span class="st">&quot;strings/fixed_utf8&quot;</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># ASCII fixed length (1 byte)</span></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/fixed_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[1]&quot;</span>)</span></code></pre></div>
@@ -652,22 +654,30 @@ and consumes no storage space.</p>
 </div>
 <div id="compression" class="section level2">
 <h2>Compression</h2>
-<p>HDF5 supports transparent data compression using the zlib (deflate)
-algorithm. You can control the compression intensity using the
+<p>HDF5 supports transparent data compression using the zlib (gzip) and
+szip algorithms. You can control the compression behavior using the
 <code>compress</code> argument.</p>
 <ul>
-<li><strong><code>TRUE</code></strong>: Enables standard compression
-(Level 5).</li>
-<li><strong><code>FALSE</code> / <code>0</code></strong>: Disables
-compression.</li>
-<li><strong><code>1</code> - <code>9</code></strong>: Specific
-compression level (1 = fastest, 9 = most compressed).</li>
+<li><strong><code>&quot;gzip-5&quot;</code></strong> (default): Standard zlib
+compression at level 5. Levels <code>&quot;gzip-1&quot;</code> through
+<code>&quot;gzip-9&quot;</code> are also supported. Safe and universally
+compatible.</li>
+<li><strong><code>&quot;szip-nn&quot;</code></strong>: Szip with Nearest Neighbor
+coding. Best for continuous, correlated, or floating-point data (e.g.,
+time series or smooth gradients).</li>
+<li><strong><code>&quot;szip-ec&quot;</code></strong>: Szip with Entropy Coding.
+Best for uncorrelated, discrete, or categorical integer data.</li>
+<li><strong><code>&quot;none&quot;</code></strong>: Disables compression
+entirely.</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Maximum compression</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;data/max&quot;</span>, <span class="at">compress =</span> <span class="dv">9</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Maximum zlib compression</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;data/max&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-9&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co"># Szip Entropy Coding for discrete integer data</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>), file, <span class="st">&quot;data/szip&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;szip-ec&quot;</span>)</span></code></pre></div>
 <div id="the-shuffle-filter" class="section level3">
 <h3>The Shuffle Filter</h3>
-<p>When compression is enabled (level &gt; 0), <code>h5lite</code>
+<p>When <code>gzip</code> compression is enabled, <code>h5lite</code>
 automatically applies the HDF5 <strong>Byte Shuffle Filter</strong>
 before the data is compressed. The Shuffle Filter does not compress data
 itself; rather, it rearranges the byte stream to make it more
@@ -679,15 +689,18 @@ For example, in a 4-byte integer array:</p>
 <li>All the 2nd bytes are grouped together.</li>
 <li>And so on.</li>
 </ol>
-<p><strong>Why this helps:</strong> * <strong>Integers:</strong> Small
-integers often have many zero-padding bytes. The shuffle filter groups
-these zeros into long runs, which zlib compresses extremely efficiently.
-This allows <code>int32</code> data to compress nearly as well as
-<code>int8</code> data if the values are small. *
-<strong>Doubles:</strong> Floating point numbers often share the same
-exponent bytes if they are in a similar range. The shuffle filter groups
-these identical exponent bytes, creating repetitive patterns that zlib
-can compress.</p>
+<p><strong>Why this helps:</strong></p>
+<ul>
+<li><strong>Integers:</strong> Small integers often have many
+zero-padding bytes. The shuffle filter groups these zeros into long
+runs, which zlib compresses extremely efficiently. This allows
+<code>int32</code> data to compress nearly as well as <code>int8</code>
+data if the values are small.</li>
+<li><strong>Doubles:</strong> Floating point numbers often share the
+same exponent bytes if they are in a similar range. The shuffle filter
+groups these identical exponent bytes, creating repetitive patterns that
+zlib can compress.</li>
+</ul>
 </div>
 </div>
 

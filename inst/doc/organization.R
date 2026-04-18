@@ -32,7 +32,7 @@ h5_write(experiment_data, file, "exp_101")
 
 ## -----------------------------------------------------------------------------
 # List all objects recursively
-h5_ls(file, recursive = TRUE)
+h5_ls(file)
 
 # Visualize the tree
 h5_str(file)

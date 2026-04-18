@@ -45,11 +45,11 @@ print(data_in)
 sparse_mat <- matrix(0, nrow = 1000, ncol = 1000)
 sparse_mat[1:10, 1:10] <- 1
 
-# Write with compression (zlib level 5)
-h5_write(sparse_mat, file, "compressed/matrix", compress = TRUE)
+# Write with default compression (zlib level 5)
+h5_write(sparse_mat, file, "compressed/matrix")
 
 # Write with high compression (zlib level 9)
-h5_write(sparse_mat, file, "compressed/matrix_max", compress = 9)
+h5_write(sparse_mat, file, "compressed/matrix_max", compress = "gzip-9")
 
 ## ----include=FALSE------------------------------------------------------------
 unlink(file)

@@ -1,4 +1,5 @@
-test_that("h5 wrapper object works", {
+local({
+  #test_that("h5 wrapper object works", {
   file <- tempfile(fileext = ".h5")
   on.exit(unlink(file))
   
@@ -13,11 +14,13 @@ test_that("h5 wrapper object works", {
   
   
   # Misc functions
-  expect_output(str(h5))
-  expect_output(print(h5))
+  expect_stdout(str(h5))
+  expect_stdout(print(h5))
   expect_equal(as.character(h5), file)
   expect_equal(h5$class("dset"), "numeric")
   expect_equal(h5$dim("dset"), 10)
+  expect_inherits(h5$inspect("dset"), "inspect")
+  expect_equal(h5$length("dset"), 10)
   expect_equal(h5$typeof("dset"), "uint8")
   expect_true(h5$is_dataset("dset"))
   expect_false(h5$is_group("dset"))
@@ -49,6 +52,6 @@ test_that("h5 wrapper object works", {
   # Closing
   h5$close()
   
-  expect_output(print(h5))
+  expect_stdout(print(h5))
   expect_error(h5$ls(), "handle has been closed")
 })

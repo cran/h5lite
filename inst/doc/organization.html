@@ -12,7 +12,7 @@
 
 
 
-<title>Data Organization</title>
+<title>Organization</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -337,7 +337,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Data Organization</h1>
+<h1 class="title toc-ignore">Organization</h1>
 
 
 
@@ -394,10 +394,13 @@ parent groups.</p>
 <p>The most powerful way to organize data in <code>h5lite</code> is by
 mapping R <strong>lists</strong> to HDF5 <strong>groups</strong>.</p>
 <p>When you pass a named list to <code>h5_write()</code>,
-<code>h5lite</code> recursively writes the list structure to the file. *
-<strong>Named Lists</strong> become <strong>Groups</strong>. *
-<strong>Atomic Vectors/Matrices</strong> inside the list become
-<strong>Datasets</strong>.</p>
+<code>h5lite</code> recursively writes the list structure to the
+file.</p>
+<ul>
+<li><strong>Named Lists</strong> become <strong>Groups</strong>.</li>
+<li><strong>Atomic Vectors/Matrices</strong> inside the list become
+<strong>Datasets</strong>.</li>
+</ul>
 <p>This allows you to organize your entire data structure in R and save
 it to disk in one command.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Define a complex structure in R</span></span>
@@ -428,7 +431,7 @@ for programmatic checks.</li>
 exploration.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># List all objects recursively</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">h5_ls</span>(file, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">h5_ls</span>(file)</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;project_A&quot;                        &quot;project_A/simulation&quot;            </span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;project_A/simulation/run_01&quot;      &quot;exp_101&quot;                         </span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;exp_101/metadata&quot;                 &quot;exp_101/metadata/id&quot;             </span></span>

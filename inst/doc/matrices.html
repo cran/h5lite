@@ -400,13 +400,15 @@ survive the round-trip to disk and back.</p>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>data_in <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;genetics/expression&quot;</span>)</span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="fu">print</span>(data_in)</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;             Gene_1     Gene_2      Gene_3</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Sample_A 1.3613766 -1.0888527 -0.01808857</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Sample_B 0.4309375  0.1311432  1.62414883</span></span></code></pre></div>
-<p><em>Technical Note: In the HDF5 file, the names are stored as
-separate datasets (e.g., <code>_rownames</code>, <code>_colnames</code>)
-and linked to the main dataset using HDF5 Dimension Scale
-attributes.</em></p>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;             Gene_1     Gene_2    Gene_3</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Sample_A 0.7653675  2.0380333 0.7202765</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Sample_B 0.9947962 -0.2502995 0.8382861</span></span></code></pre></div>
+<blockquote>
+<p><strong>Technical Note:</strong> In the HDF5 file, the names are
+stored as separate datasets (e.g., <code>_rownames</code>,
+<code>_colnames</code>) and linked to the main dataset using HDF5
+Dimension Scale attributes.</p>
+</blockquote>
 </div>
 <div id="dimension-ordering-row-major-vs.-column-major" class="section level2">
 <h2>Dimension Ordering (Row-Major vs. Column-Major)</h2>
@@ -422,8 +424,8 @@ dimension varies fastest.</li>
 <h3>How h5lite handles it</h3>
 <p>To ensure that a <code>3x4</code> matrix in R looks like a
 <code>3x4</code> dataset in HDF5 tools (like <code>h5dump</code> or
-<code>HDFView</code>), <code>h5lite</code> physically
-<strong>transposes</strong> the data during read/write operations.</p>
+<code>HDFView</code>), <code>h5lite</code> <strong>rearranges</strong>
+the data during read/write operations.</p>
 <ol style="list-style-type: decimal">
 <li><strong>Writing:</strong> <code>h5lite</code> converts R’s
 column-major memory layout to HDF5’s row-major layout.</li>
@@ -459,11 +461,11 @@ dataset (breaks it into smaller tiles).</p>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>sparse_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="dv">1000</span>, <span class="at">ncol =</span> <span class="dv">1000</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>sparse_mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Write with compression (zlib level 5)</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">h5_write</span>(sparse_mat, file, <span class="st">&quot;compressed/matrix&quot;</span>, <span class="at">compress =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Write with default compression (zlib level 5)</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">h5_write</span>(sparse_mat, file, <span class="st">&quot;compressed/matrix&quot;</span>)</span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co"># Write with high compression (zlib level 9)</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">h5_write</span>(sparse_mat, file, <span class="st">&quot;compressed/matrix_max&quot;</span>, <span class="at">compress =</span> <span class="dv">9</span>)</span></code></pre></div>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">h5_write</span>(sparse_mat, file, <span class="st">&quot;compressed/matrix_max&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-9&quot;</span>)</span></code></pre></div>
 </div>
 <div id="partial-io" class="section level2">
 <h2>Partial I/O</h2>

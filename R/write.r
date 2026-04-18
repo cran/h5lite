@@ -15,10 +15,12 @@
 #'   See the **Data Type Selection** section for a full list of valid options 
 #'   (including `"int64"`, `"bfloat16"`, `"utf8[n]"`, etc.) and how to map 
 #'   sub-components of `data`.
-#' @param compress Compression configuration.
-#'   * `TRUE` (default): Enables compression (zlib level 5).
-#'   * `FALSE` or `0`: Disables compression.
-#'   * Integer `1-9`: Specifies the zlib compression level.
+#' @param compress Compression configuration. Default is `"gzip"`. Pass a basic string 
+#'   to specify the algorithm and level (e.g., `"none"`, `"gzip"`, `"zstd-7"`, `"lz4"`, 
+#'   `"blosc1-lz4-9"`, `"blosc2-gzip-3"`, `"blosc2-zstd"`), or pass a `compress` object 
+#'   created by [h5_compression()] for advanced pipeline control (including scale-offset 
+#'   algorithms, Fletcher32 checksums, or Blosc2 pre-filters). See [h5_compression()] 
+#'   for the complete list of available codecs and options.
 #' 
 #' @section Writing Scalars:
 #' 
@@ -111,9 +113,8 @@
 #' The dimension scales can be relocated with `h5_move()` without breaking the 
 #' link.
 #' 
-#' 
 #' @return Invisibly returns `file`. This function is called for its side effects.
-#' @seealso [h5_read()]
+#' @seealso [h5_read()], [h5_compression()], `vignette('compression')`
 #' @export
 #' @examples
 #' file <- tempfile(fileext = ".h5")
@@ -158,7 +159,7 @@
 #' 
 #' # 8. Clean up
 #' unlink(file)
-h5_write <- function(data, file, name, attr = NULL, as = "auto", compress = TRUE) {
+h5_write <- function(data, file, name, attr = NULL, as = "auto", compress = "gzip") {
   
   file <- validate_strings(file, name, attr)
   
@@ -180,6 +181,8 @@ h5_write <- function(data, file, name, attr = NULL, as = "auto", compress = TRUE
     if (is.null(attr_as) || length(attr_as) == 0) attr_as <- "auto"
   }
 
+  compress <- h5_compression(compress)
+
   # Write the data
   h5_create_group(file, name = "/")
   if (is_list_group(data)) {
@@ -193,10 +196,12 @@ h5_write <- function(data, file, name, attr = NULL, as = "auto", compress = TRUE
   invisible(file)
 }
 
+
+
 #' Recursively write a list as a group
 #' @noRd
 #' @keywords internal
-write_group <- function(data, file, name, obj_as, attr_as, compress = TRUE, dry = FALSE) {
+write_group <- function(data, file, name, obj_as, attr_as, compress, dry = FALSE) {
 
   if (!dry) h5_delete(file, name, warn = FALSE)
   if (!dry) h5_create_group(file, name)
@@ -218,7 +223,7 @@ write_group <- function(data, file, name, obj_as, attr_as, compress = TRUE, dry 
 #' Write a single dataset or attribute
 #' @noRd
 #' @keywords internal
-write_data <- function(data, file, name, attr, obj_as, attr_as, compress = FALSE, dry = FALSE) {
+write_data <- function(data, file, name, attr, obj_as, attr_as, compress, dry = FALSE) {
   
   # Convert POSIXt vectors/columns to ISO 8601 character strings.
   if (inherits(data, "POSIXt")) {
@@ -259,10 +264,8 @@ write_data <- function(data, file, name, attr, obj_as, attr_as, compress = FALSE
   dims <- validate_dims(data)
 
   if (is.null(attr)) {
-    level <- if (isTRUE(compress)) 5L else as.integer(compress)
-    
     if (!dry)
-      .Call("C_h5_write_dataset", file, name, data, h5_type, dims, level, PACKAGE = "h5lite")
+      .Call("C_h5_write_dataset", file, name, data, h5_type, dims, compress, PACKAGE = "h5lite")
     
     write_attributes(data, file, name, attr_as, dry = dry)
   }
@@ -284,7 +287,7 @@ write_attributes <- function(data, file, name, attr_as, dry = FALSE) {
   for (attr in attr_names) {
     attr_data <- base::attr(data, attr, exact = TRUE)
     if (is_list_group(attr_data)) next
-    write_data(attr_data, file, name, attr, attr_as, attr_as, dry = dry)
+    write_data(attr_data, file, name, attr, attr_as, attr_as, list("none", NULL, NULL), dry = dry)
   }
 }
 

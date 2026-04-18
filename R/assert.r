@@ -9,11 +9,21 @@ assert_scalar_logical <- function(...) {
   }
 }
 
+assert_scalar_integer <- function(..., .null_ok = FALSE) {
+  dots <- list(...)
+  for (i in seq_along(dots)) {
+    x <- dots[[i]]
+    if (.null_ok && is.null(x)) next
+    if (!(is.numeric(x) && length(x) == 1 && !is.na(x) && isTRUE(x %% 1 == 0)))
+      stop("Argument `", match.call()[[i + 1]], "` must be a scalar integer.", call. = FALSE)
+  }
+}
+
 assert_scalar_character <- function(...) {
   dots <- list(...)
   for (i in seq_along(dots)) {
     x <- dots[[i]]
-    if (!(is.character(x) && length(x) == 1 && !is.na(x) && nzchar(x)))
+    if (!(is.character(x) && length(x) == 1 && !is.na(x) && nzchar(trimws(x))))
       stop("Argument `", match.call()[[i + 1]], "` must be a scalar character.", call. = FALSE)
   }
 }
@@ -48,6 +58,70 @@ validate_strings <- function (file, name = "/", attr = NULL, must_exist = FALSE)
   }
 
   return (file)
+}
+
+
+#' Sanity check integer arguments for start and count
+#' @noRd
+#' @keywords internal
+validate_start_count <- function (file, name, attr, start, count) {
+  
+  if (is.null(start) && is.null(count))
+    return (invisible())
+  
+  if (is.null(start) && !is.null(count))
+    stop('`start` must be provided if `count` is specified.', call. = FALSE)
+  
+  if (!is.null(attr))
+    stop('`start` and `count` cannot be used on attributes.', call. = FALSE)
+  
+  if (!is.numeric(start)) stop ('`start` must be numeric', call. = FALSE)
+  
+  start <- as.numeric(start)
+  
+  if (length(start) <  1) stop ('`start` cannot be an empty vector', call. = FALSE)
+  if (!isTRUE(all(start > 0))) stop ('`start` must be positive', call. = FALSE)
+  
+  # Allow count to be NULL in the parent frame, but enforce it as 1 for bounds checking here
+  check_count <- count
+  if (is.null(count)) {
+    check_count <- 1
+  } else {
+    if (!is.numeric(count)) stop ('`count` must be numeric', call. = FALSE)
+    check_count <- as.numeric(count)
+    if (length(check_count) != 1) stop ('`count` must be a single numeric value', call. = FALSE)
+    if (!isTRUE(all(check_count > 0))) stop ('`count` must be positive', call. = FALSE)
+  }
+  
+  shape <- h5_dim(file, name, attr)
+  if (length(shape) == 0) shape <- 1L # scalar
+  
+  N <- length(shape)
+  n <- length(start)
+  
+  if (n > N) stop('`start` has more dimensions than the dataset', call. = FALSE)
+  
+  # Determine alignment: which dimensions in `shape` does `start` apply to?
+  if (N >= 3) { full_map <- c(seq(N, 3L, by = -1L), 1L, 2L) }
+  else        { full_map <- seq_len(N) }
+  
+  # Slice the map to match the number of values provided in `start`
+  dim_map <- full_map[seq_len(n)]
+  
+  # Extract the specific dimension sizes that 'start' is targeting
+  target_shape <- shape[dim_map]
+  
+  if (!isTRUE(all(target_shape >= start)))              stop('`start` is out of bounds', call. = FALSE)
+  if (start[[n]] + check_count - 1 > target_shape[[n]]) stop('`count` is out of bounds', call. = FALSE)
+  
+  assign('start', start, pos = parent.frame())
+  
+  # Only overwrite count in the parent if it was actively provided
+  if (!is.null(count)) {
+    assign('count', check_count, pos = parent.frame())
+  }
+  
+  return (invisible())
 }
 
 

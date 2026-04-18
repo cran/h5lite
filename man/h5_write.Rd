@@ -4,7 +4,7 @@
 \alias{h5_write}
 \title{Write an R Object to HDF5}
 \usage{
-h5_write(data, file, name, attr = NULL, as = "auto", compress = TRUE)
+h5_write(data, file, name, attr = NULL, as = "auto", compress = "gzip")
 }
 \arguments{
 \item{data}{The R object to write. Supported: \code{numeric}, \code{complex},
@@ -26,12 +26,12 @@ See the \strong{Data Type Selection} section for a full list of valid options
 (including \code{"int64"}, \code{"bfloat16"}, \code{"utf8[n]"}, etc.) and how to map
 sub-components of \code{data}.}
 
-\item{compress}{Compression configuration.
-\itemize{
-\item \code{TRUE} (default): Enables compression (zlib level 5).
-\item \code{FALSE} or \code{0}: Disables compression.
-\item Integer \code{1-9}: Specifies the zlib compression level.
-}}
+\item{compress}{Compression configuration. Default is \code{"gzip"}. Pass a basic string
+to specify the algorithm and level (e.g., \code{"none"}, \code{"gzip"}, \code{"zstd-7"}, \code{"lz4"},
+\code{"blosc1-lz4-9"}, \code{"blosc2-gzip-3"}, \code{"blosc2-zstd"}), or pass a \code{compress} object
+created by \code{\link[=h5_compression]{h5_compression()}} for advanced pipeline control (including scale-offset
+algorithms, Fletcher32 checksums, or Blosc2 pre-filters). See \code{\link[=h5_compression]{h5_compression()}}
+for the complete list of available codecs and options.}
 }
 \value{
 Invisibly returns \code{file}. This function is called for its side effects.
@@ -192,5 +192,5 @@ h5_str(file)
 unlink(file)
 }
 \seealso{
-\code{\link[=h5_read]{h5_read()}}
+\code{\link[=h5_read]{h5_read()}}, \code{\link[=h5_compression]{h5_compression()}}, \code{vignette('compression')}
 }

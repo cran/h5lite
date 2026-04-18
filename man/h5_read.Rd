@@ -4,7 +4,7 @@
 \alias{h5_read}
 \title{Read an HDF5 Object or Attribute}
 \usage{
-h5_read(file, name = "/", attr = NULL, as = "auto")
+h5_read(file, name = "/", attr = NULL, as = "auto", start = NULL, count = NULL)
 }
 \arguments{
 \item{file}{The path to the HDF5 file.}
@@ -22,6 +22,15 @@ h5_read(file, name = "/", attr = NULL, as = "auto")
 \item \strong{Global:} \code{"auto"} (default), \code{"integer"}, \code{"double"}, \code{"logical"}, \code{"bit64"}, \code{"null"}.
 \item \strong{Specific:} A named vector mapping names or type classes to R types (see Section "Type Conversion").
 }}
+
+\item{start}{A numeric vector specifying the 1-based coordinate(s) for a partial read.
+Most often, this is a \strong{single value} targeting the most logical structural unit
+(e.g., the row of a matrix, or the 2D matrix of a 3D array).
+If \code{NULL} (default), the entire dataset is read.}
+
+\item{count}{A single numeric value specifying the number of elements or units to read.
+If \code{NULL} (default) and \code{start} is provided, \code{h5lite} reads exactly 1 unit and
+simplifies the resulting dimensions (see Section "Dimension Simplification").}
 }
 \value{
 An R object corresponding to the HDF5 object or attribute.
@@ -29,12 +38,61 @@ Returns \code{NULL} if the object is skipped via \code{as = "null"}.
 }
 \description{
 Reads a dataset, a group, or a specific attribute from an HDF5 file into an R object.
+Supports partial reading (hyperslabs) to load specific subsets of data without
+loading the entire object into memory.
 }
 \note{
 The \code{@} prefix is \strong{only} used to configure attached attributes when reading a dataset (\code{attr = NULL}).
 If you are reading a specific attribute directly (e.g., \code{h5_read(..., attr = "id")}), do \strong{not} use
 the \code{@} prefix in the \code{as} argument.
+
+Partial reading (\code{start}/\code{count}) is currently only supported for datasets, not attributes.
 }
+\section{Partial Reading (Hyperslabs)}{
+
+You can read specific subsets of an n-dimensional dataset by utilizing the \code{start}
+and \code{count} arguments.
+
+\strong{The "Smart" \code{start} Parameter}
+
+\code{start} is designed to be intuitive. Most of the time, you only need to provide a single value.
+This single value automatically targets the most meaningful dimension of the dataset:
+\itemize{
+\item \strong{1D Vector:} \code{start} specifies the \strong{element}.
+\item \strong{2D Matrix / Data Frame:} \code{start} specifies the \strong{row}.
+\item \strong{3D Array:} \code{start} specifies the \strong{2D matrix}.
+}
+
+The \code{count} parameter is a \strong{single value} that determines how many of those units
+to read sequentially. For example, \code{start = 5} and \code{count = 3} on a matrix will read 3 complete
+rows starting at row 5 (automatically spanning all columns).
+
+\strong{Multi-Value \code{start} and N-Dimensional Arrays}
+
+If you need to extract a specific block \emph{inside} a structural unit, you can provide a vector of
+values to \code{start}. To make indexing intuitive across higher-order arrays, \code{start} maps
+its values to dimensions in the following priority order, targeting the outermost blocks first
+and specific rows/columns last:
+\itemize{
+\item \verb{N, N-1, ..., 3, 1 (Rows), 2 (Cols)}
+}
+
+For example, on a 3D array, \code{start = c(2, 5)} targets the 2nd matrix, and the 5th row.
+The \code{count} argument always applies to the \strong{last} dimension specified in \code{start}.
+
+\strong{Dimension Simplification (Dropping)}
+
+\code{h5lite} mimics R's native subsetting behavior regarding dimension preservation:
+\itemize{
+\item \strong{Exact Indexing (\code{count = NULL}):} If you provide \code{start} but omit \code{count}, \code{h5lite}
+assumes you are targeting an exact point index. It will read 1 unit and \strong{drop} the
+targeted dimension. (e.g., reading a specific row of a matrix will return a 1D vector).
+\item \strong{Range Indexing (\code{count} provided):} If you explicitly provide \code{count} (even \code{count = 1}),
+\code{h5lite} assumes you are reading a range. The dataset's original structural geometry is
+\strong{preserved}. (e.g., reading \verb{start = 5, count = 1} on a matrix will return a 1xN matrix).
+}
+}
+
 \section{Type Conversion (\code{as})}{
 
 You can control how HDF5 data is converted to R types using the \code{as} argument.
@@ -68,35 +126,49 @@ which take precedence over the global default (\code{.}).
 \examples{
 file <- tempfile(fileext = ".h5")
 
-# --- Write Data ---
-h5_write(c(10L, 20L), file, "ints")
-h5_write(I(TRUE),     file, "ints", attr = "ready")
-h5_write(c(10.5, 18), file, "floats")
-h5_write(I("meters"), file, "floats", attr = "unit")
+# --- Setup: Write Test Data ---
+h5_write(c(10L, 20L, 30L, 40L, 50L), file, "ints")
 
-# --- Read Data ---
-# Read dataset
+m <- matrix(1:50, nrow = 10, ncol = 5, dimnames = list(paste0("r", 1:10), paste0("c", 1:5)))
+h5_write(m, file, "matrix_data")
+
+arr <- array(1:24, dim = c(2, 3, 4))
+h5_write(arr, file, "array_data")
+
+# --- Standard Reading ---
+# Read the entire dataset
 x <- h5_read(file, "ints")
-print(x)
 
-# Read dataset with attributes
-y <- h5_read(file, "floats")
-print(attr(y, "unit"))
-
-# Read a specific attribute directly
-unit <- h5_read(file, "floats", attr = "unit")
-print(unit)
-
-# --- Type Conversion Examples ---
-
+# --- Type Conversion ---
 # Force integer dataset to be read as numeric (double)
 x_dbl <- h5_read(file, "ints", as = "double")
 class(x_dbl)
 
-# Force attached attribute to be read as logical
-# Note the "@" prefix to target the attribute
-z <- h5_read(file, "ints", as = c("@ready" = "logical"))
-print(z)
+# --- Partial Reading: Single-Value 'start' ---
+# Vector: Start at 2nd element, read 3 elements
+h5_read(file, "ints", start = 2, count = 3)
+
+# Matrix: Start at row 5, read 3 complete rows (returns 3x5 matrix)
+h5_read(file, "matrix_data", start = 5, count = 3)
+
+# 3D Array: Start at 2nd matrix, read 2 complete matrices (returns 2x3x2 array)
+h5_read(file, "array_data", start = 2, count = 2)
+
+# --- Partial Reading: Dimension Simplification ---
+# Omit 'count' to extract an exact point index and drop the targeted dimension
+
+# Matrix: Extract exactly row 5 (drops row dimension, returns a 1D vector)
+h5_read(file, "matrix_data", start = 5)
+
+# Matrix: Extract row 5, but preserve matrix structure (returns 1x5 matrix)
+h5_read(file, "matrix_data", start = 5, count = 1)
+
+# --- Partial Reading: Multi-Value 'start' ---
+# Matrix: Extract exactly row 5, column 2 (drops both dims, returns a scalar)
+h5_read(file, "matrix_data", start = c(5, 2))
+
+# 3D Array: Target matrix 2, row 1. (drops matrix and row dims, returns 1D vector of cols)
+h5_read(file, "array_data", start = c(2, 1))
 
 unlink(file)
 }

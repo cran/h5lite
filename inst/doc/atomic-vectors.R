@@ -51,17 +51,22 @@ h5_write(c("A", "B", "C"), file, "strings/fixed", as = "ascii[10]")
 h5_write(c("short", "longer", "longest"), file, "strings/auto_fixed", as = "ascii[]")
 
 ## -----------------------------------------------------------------------------
-# Write a large vector with compression
+# Write a large vector with max zlib compression
 x <- rep(rnorm(100), 100)
-h5_write(x, file, "compressed_data", compress = TRUE)
+h5_write(x, file, "compressed_data", compress = "gzip-9")
+
+# Write a smooth, correlated dataset using szip Nearest Neighbor
+smooth_data <- sin(seq(0, 10, length.out = 1000))
+h5_write(smooth_data, file, "szip_data", compress = "szip-nn")
 
 ## -----------------------------------------------------------------------------
 if (requireNamespace("bit64", quietly = TRUE)) {
   val <- bit64::as.integer64(c("9223372036854775807", "-9223372036854775807"))
   
   h5_write(val, file, "huge_ints")
+  h5_typeof(file, "huge_ints")
   
-  in_val <- h5_read(file, "huge_ints")
+  in_val <- h5_read(file, "huge_ints", as = "bit64")
   print(class(in_val))
 }
 

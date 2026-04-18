@@ -1,5 +1,4 @@
 #include "h5lite.h"
-#include "H5DSpublic.h" /* Required for Dimension Scales */
 
 
 /*
@@ -235,10 +234,9 @@ static SEXP write_null_attribute(hid_t file_id, hid_t obj_id, const char *attr_n
 
 
 /* --- WRITER: DATASET --- */
-SEXP C_h5_write_dataset(SEXP filename, SEXP dset_name, SEXP data, SEXP dtype, SEXP dims, SEXP compress_level) {
+SEXP C_h5_write_dataset(SEXP filename, SEXP dset_name, SEXP data, SEXP dtype, SEXP dims, SEXP compress) {
   const char *fname = Rf_translateCharUTF8(STRING_ELT(filename, 0));
   const char *dname = Rf_translateCharUTF8(STRING_ELT(dset_name, 0));
-  int compress = asInteger(compress_level);
   
   hid_t file_id = open_or_create_file(fname);
 
@@ -287,20 +285,12 @@ SEXP C_h5_write_dataset(SEXP filename, SEXP dset_name, SEXP data, SEXP dtype, SE
       hid_t dcpl_id = H5Pcreate(H5P_DATASET_CREATE);
       
       /* Only apply chunking/compression if requested and applicable */
-      if (compress > 0 && rank > 0 && XLENGTH(data) > 0) {
-        
-        /* Get element size (e.g., 4 bytes for int, 8 for double) */
+      if (rank > 0 && XLENGTH(data) > 0) {
         size_t type_size = H5Tget_size(file_type_id);
-        
-        /* Heuristic for choosing a chunk size (~1 MB) */
         hsize_t *chunk_dims = (hsize_t *) R_alloc(rank, sizeof(hsize_t));
-        calculate_chunk_dims(rank, h5_dims, type_size, chunk_dims);
-        H5Pset_chunk(dcpl_id, rank, chunk_dims);
+        calculate_chunk_dims(rank, h5_dims, type_size, compress, chunk_dims);
         
-        /* Apply shuffle filter on multibyte data types */
-        if (type_size > 1) H5Pset_shuffle(dcpl_id);
-        
-        H5Pset_deflate(dcpl_id, (unsigned int)compress);
+        apply_compression(dcpl_id, file_type_id, rank, chunk_dims, compress);
       }
       
       /* Create the dataset passing both LCPL (name encoding) and DCPL (compression) */
@@ -355,7 +345,7 @@ SEXP C_h5_write_attribute(SEXP filename, SEXP obj_name, SEXP attr_name, SEXP dat
   else if (TYPEOF(data) == VECSXP) { /* a data.frame */
     /* Attribute writing mode: is_attribute = 1. Scales will NOT be written.
        write_dataframe handles internal ACPL creation for UTF-8 names. */
-    errmsg = write_dataframe(file_id, obj_id, aname, data, dtype, 0, 1);
+    errmsg = write_dataframe(file_id, obj_id, aname, data, dtype, R_NilValue, 1);
   }
   else { /* an atomic type or NULL */
     const char *dtype_str_check = CHAR(STRING_ELT(dtype, 0));

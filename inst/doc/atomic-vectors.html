@@ -492,17 +492,26 @@ pads shorter strings; <strong>does not support
 <p>Compression in HDF5 requires the dataset to be “chunked”.
 <code>h5lite</code> handles chunking parameters automatically when you
 enable compression.</p>
-<p>You can enable compression using the <code>compress</code>
+<p>You can configure compression using the <code>compress</code>
 argument:</p>
 <ul>
-<li><code>compress = TRUE</code> (default): Uses zlib (deflate) level
-5.</li>
-<li><code>compress = 9</code>: Uses zlib level 9 (max compression,
-slower).</li>
+<li><code>&quot;gzip-5&quot;</code> (default): Standard zlib compression at level
+5. Levels <code>&quot;gzip-1&quot;</code> through <code>&quot;gzip-9&quot;</code> are also
+supported. Safe and universally compatible.</li>
+<li><code>&quot;szip-nn&quot;</code>: Szip with Nearest Neighbor coding. Best for
+continuous, correlated, or floating-point data (e.g., time series or
+smooth gradients).</li>
+<li><code>&quot;szip-ec&quot;</code>: Szip with Entropy Coding. Best for
+uncorrelated, discrete, or categorical integer data.</li>
+<li><code>&quot;none&quot;</code>: Disables compression entirely.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Write a large vector with compression</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Write a large vector with max zlib compression</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="dv">100</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed_data&quot;</span>, <span class="at">compress =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed_data&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-9&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co"># Write a smooth, correlated dataset using szip Nearest Neighbor</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>smooth_data <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">1000</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="fu">h5_write</span>(smooth_data, file, <span class="st">&quot;szip_data&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;szip-nn&quot;</span>)</span></code></pre></div>
 </div>
 <div id="bit-integers" class="section level2">
 <h2>64-bit Integers</h2>
@@ -514,11 +523,12 @@ HDF5 <code>int64</code>.</p>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  val <span class="ot">&lt;-</span> bit64<span class="sc">::</span><span class="fu">as.integer64</span>(<span class="fu">c</span>(<span class="st">&quot;9223372036854775807&quot;</span>, <span class="st">&quot;-9223372036854775807&quot;</span>))</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  </span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="fu">h5_write</span>(val, file, <span class="st">&quot;huge_ints&quot;</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  </span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  in_val <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;huge_ints&quot;</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">class</span>(in_val))</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>}</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;numeric&quot;</span></span></code></pre></div>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="fu">h5_typeof</span>(file, <span class="st">&quot;huge_ints&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  </span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  in_val <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;huge_ints&quot;</span>, <span class="at">as =</span> <span class="st">&quot;bit64&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">class</span>(in_val))</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>}</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer64&quot;</span></span></code></pre></div>
 </div>
 
 
