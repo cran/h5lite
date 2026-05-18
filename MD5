@@ -1,7 +1,7 @@
-95ee84fb5c39ed9068cb4a9d54d30190 *DESCRIPTION
+518f13bbf4d1df2bc5b4d12c0152c6f8 *DESCRIPTION
 ad651bee31b84753109b9c915cae70a5 *LICENSE
 eccd815ce3259f8d3a9f674c2ea48f8f *NAMESPACE
-7f1b3d24f76df69487e64955385a8b5d *NEWS.md
+2835de949e25fa3671ccf631e120c4df *NEWS.md
 90310c1396f4802065e7adefbb7dde01 *R/assert.r
 7defc302756d4f6643b98e14c13235ce *R/compress.r
 a628f8a33918282ff02033d8dd8d7458 *R/h5lite-package.r
@@ -14,7 +14,7 @@ b441e96710bebf49ab97b2a0c9833f60 *R/ls.r
 40faf4e3fd30237501b9949f98e6d1bd *R/write.r
 e2f98672c7e9c27495db10803c93c6f0 *R/zzz.r
 f3edf53770eee5262f41bd31e439b44e *README.md
-5314838fc9d04c1d57b6994ee8246c6d *build/vignette.rds
+e088deab0247c9eed2c4137fee36f5ce *build/vignette.rds
 492afbd7d41a129f3e98a354117adb28 *inst/doc/atomic-vectors.R
 7ab5d8fa9b14027b03cb43447de2ab7a *inst/doc/atomic-vectors.Rmd
 2f2a6f814672a6362199a05ee059d05f *inst/doc/atomic-vectors.html
@@ -34,10 +34,10 @@ c0ed743bca4fddf91e74d4b09df3177c *inst/doc/h5lite.Rmd
 a607c9e05f09a75ec75dc29b9127575c *inst/doc/h5lite.html
 3132ea5cfcda73f23c413afa3c7185dc *inst/doc/matrices.R
 5c7243b8dd722d37f7ddc1ba3682cb34 *inst/doc/matrices.Rmd
-bf4cd8e2446b254ec79bdd1cbbf6f4a6 *inst/doc/matrices.html
+1816e05268778d2aee484e9c7ad7d9da *inst/doc/matrices.html
 ee3f8eab33148b002916c9ebcdc701e4 *inst/doc/oo-interface.R
 8d9d56ff6ffa12751264d5a4098106e4 *inst/doc/oo-interface.Rmd
-7de5c4e121b2c4eb42f78f47d007ad16 *inst/doc/oo-interface.html
+6a7042101ac329f890471d5ebb9de33c *inst/doc/oo-interface.html
 91124e5c6a5a70c24fe2dc8b1065d90b *inst/doc/organization.R
 fc150ccecd3e29281eb69a46635b5cf8 *inst/doc/organization.Rmd
 6184ca6f3b770600ca4a0887cc4aecf3 *inst/doc/organization.html
@@ -80,12 +80,12 @@ dabd8e336a71421e5eeb6af9516cad88 *src/info.c
 39207c9abf2c09b1f7851bd6cc33c798 *src/ls.c
 eeeb977f3bdfff312031b89c0aa2e988 *src/organize.c
 77a0813f6ad02d84783b3cbaae304337 *src/read.c
-b221db6148d2b60ff2c5c080c75fa644 *src/util.c
+1e89ba14b609a11ffa47aedef8316ca4 *src/util.c
 9bdcb1db5ecc7bc3545130d3158f87f2 *src/write.c
 6f4d309f3ae36438c9ecfa394876e46a *src/write_utils.c
 c01d27b22c6ce72bc2e423849df04f70 *tests/tinytest.r
 1d77af7d77ee603780200bb12f529116 *tests/tinytests/test-character.r
-98a510f8e7e5d595d356dcb2187cb1d7 *tests/tinytests/test-coerce.r
+dc0c673f9c0800135e12979f55adf923 *tests/tinytests/test-coerce.r
 c5e9e340cae279f760bdf7bbfaa72dbf *tests/tinytests/test-complex.r
 29222d8cf512da3a34df9de959769c49 *tests/tinytests/test-compress.r
 a194dd22de7b78a02edf20215335fc0f *tests/tinytests/test-dataframe.r
