@@ -14,41 +14,28 @@
 
 <title>Atomic Vectors</title>
 
-<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
-// be compatible with the behavior of Pandoc < 2.8).
-document.addEventListener('DOMContentLoaded', function(e) {
-  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
-  var i, h, a;
-  for (i = 0; i < hs.length; i++) {
-    h = hs[i];
-    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
-    a = h.attributes;
-    while (a.length > 0) h.removeAttribute(a[0].name);
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-});
-</script>
-
-<style type="text/css">
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-</style>
-
-
-
-<style type="text/css">
-code {
-white-space: pre;
-}
-.sourceCode {
-overflow: visible;
-}
+  .sourceCode {
+    overflow: visible;
+  }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -64,54 +51,55 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-{ counter-reset: source-line 0; }
+  { counter-reset: source-line 0; }
 pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
+  { position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-color: #aaaaaa;
-}
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-{ }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } 
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.at { color: #7d9029; } 
-code span.bn { color: #40a070; } 
-code span.bu { color: #008000; } 
-code span.cf { color: #007020; font-weight: bold; } 
-code span.ch { color: #4070a0; } 
-code span.cn { color: #880000; } 
-code span.co { color: #60a0b0; font-style: italic; } 
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.do { color: #ba2121; font-style: italic; } 
-code span.dt { color: #902000; } 
-code span.dv { color: #40a070; } 
-code span.er { color: #ff0000; font-weight: bold; } 
-code span.ex { } 
-code span.fl { color: #40a070; } 
-code span.fu { color: #06287e; } 
-code span.im { color: #008000; font-weight: bold; } 
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.kw { color: #007020; font-weight: bold; } 
-code span.op { color: #666666; } 
-code span.ot { color: #007020; } 
-code span.pp { color: #bc7a00; } 
-code span.sc { color: #4070a0; } 
-code span.ss { color: #bb6688; } 
-code span.st { color: #4070a0; } 
-code span.va { color: #19177c; } 
-code span.vs { color: #4070a0; } 
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -145,187 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -341,194 +149,145 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>Atomic vectors are the fundamental data structure in R. They include
-<strong>numeric</strong> (integer and double), <strong>logical</strong>,
-<strong>character</strong>, <strong>complex</strong>, and
-<strong>raw</strong> vectors. This vignette explains how
-<code>h5lite</code> maps these R types to HDF5 datasets and provides
-guidance on controlling storage types and compression.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span></code></pre></div>
+<p>Atomic vectors are the fundamental data structure in R. They include <strong>numeric</strong> (integer and double), <strong>logical</strong>, <strong>character</strong>, <strong>complex</strong>, and <strong>raw</strong> vectors. This vignette explains how <code>h5lite</code> maps these R types to HDF5 datasets and provides guidance on controlling storage types and compression.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span></code></pre></div>
 <div id="basic-usage" class="section level2">
 <h2>Basic Usage</h2>
-<p>Writing a vector to HDF5 is straightforward using
-<code>h5_write()</code>. The package automatically creates the necessary
-dataset and handles dimensions.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Write a numeric vector</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.3</span>, <span class="fl">4.2</span>, <span class="fl">5.1</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">h5_write</span>(vec, file, <span class="st">&quot;data/numeric_vector&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Read it back</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;data/numeric_vector&quot;</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">print</span>(res)</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; [1] 1.5 2.3 4.2 5.1</span></span></code></pre></div>
+<p>Writing a vector to HDF5 is straightforward using <code>h5_write()</code>. The package automatically creates the necessary dataset and handles dimensions.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a numeric vector</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.3</span>, <span class="fl">4.2</span>, <span class="fl">5.1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(vec, file, <span class="st">&quot;data/numeric_vector&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read it back</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;data/numeric_vector&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(res)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.5 2.3 4.2 5.1</span></span></code></pre></div>
 </div>
 <div id="scalars-vs.-1d-arrays" class="section level2">
 <h2>Scalars vs. 1D Arrays</h2>
-<p>In R, a “scalar” is simply a vector of length 1. However, HDF5
-distinguishes between a <strong>Scalar Dataspace</strong> (a single
-value with no dimensions) and a <strong>Simple Dataspace</strong> (an
-array) with dimensions <code>[1]</code>.</p>
-<p>By default, <code>h5lite</code> treats length-1 vectors as 1D arrays
-to maintain consistency with R’s vector behavior. To write a true HDF5
-scalar, you must wrap the value in <code>I()</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># 1. Default: 1D Array (Length 1)</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">42</span>, file, <span class="st">&quot;structure/array_1d&quot;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># 2. Explicit Scalar: Wrapped in I()</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">I</span>(<span class="dv">42</span>), file, <span class="st">&quot;structure/scalar&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">h5_str</span>(file, <span class="st">&quot;structure&quot;</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; structure/</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; ├── array_1d &lt;uint8 × 1&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; └── scalar &lt;uint8 scalar&gt;</span></span></code></pre></div>
-<p><em>Note: When reading data back into R, both storage formats appear
-as standard R vectors of length 1.</em></p>
+<p>In R, a “scalar” is simply a vector of length 1. However, HDF5 distinguishes between a <strong>Scalar Dataspace</strong> (a single value with no dimensions) and a <strong>Simple Dataspace</strong> (an array) with dimensions <code>[1]</code>.</p>
+<p>By default, <code>h5lite</code> treats length-1 vectors as 1D arrays to maintain consistency with R’s vector behavior. To write a true HDF5 scalar, you must wrap the value in <code>I()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Default: 1D Array (Length 1)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">42</span>, file, <span class="st">&quot;structure/array_1d&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Explicit Scalar: Wrapped in I()</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">I</span>(<span class="dv">42</span>), file, <span class="st">&quot;structure/scalar&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_str</span>(file, <span class="st">&quot;structure&quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; structure/</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ├── array_1d &lt;uint8 × 1&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; └── scalar &lt;uint8 scalar&gt;</span></span></code></pre></div>
+<p><em>Note: When reading data back into R, both storage formats appear as standard R vectors of length 1.</em></p>
 </div>
 <div id="numeric-and-logical-data" class="section level2">
 <h2>Numeric and Logical Data</h2>
 <div id="automatic-type-selection" class="section level3">
 <h3>Automatic Type Selection</h3>
-<p><code>h5lite</code> attempts to map R types to the most efficient
-HDF5 equivalents automatically (<code>as = &quot;auto&quot;</code>).</p>
+<p><code>h5lite</code> attempts to map R types to the most efficient HDF5 equivalents automatically (<code>as = &quot;auto&quot;</code>).</p>
 <ol style="list-style-type: decimal">
-<li><strong>Numeric:</strong> <code>h5lite</code> analyzes the range of
-your data and picks the smallest fitting HDF5 type (e.g.,
-<code>uint8</code>, <code>int16</code>, <code>int32</code>,
-<code>float64</code>).</li>
-<li><strong>Logicals:</strong> <code>h5lite</code> maps these to
-<code>uint8</code> (0 or 1) in HDF5 to save space.</li>
+<li><strong>Numeric:</strong> <code>h5lite</code> analyzes the range of your data and picks the smallest fitting HDF5 type (e.g., <code>uint8</code>, <code>int16</code>, <code>int32</code>, <code>float64</code>).</li>
+<li><strong>Logicals:</strong> <code>h5lite</code> maps these to <code>uint8</code> (0 or 1) in HDF5 to save space.</li>
 </ol>
 </div>
 <div id="handling-missing-values-na" class="section level3">
 <h3>Handling Missing Values (NA)</h3>
-<p>A key challenge in HDF5 is that standard integer and boolean types do
-not have a native representation for <code>NA</code> (missing
-values).</p>
-<p>To ensure data safety, <code>h5lite</code> performs the following
-check:</p>
+<p>A key challenge in HDF5 is that standard integer and boolean types do not have a native representation for <code>NA</code> (missing values).</p>
+<p>To ensure data safety, <code>h5lite</code> performs the following check:</p>
 <ul>
-<li>If an integer or logical vector contains <code>NA</code>, it is
-<strong>automatically promoted to <code>float64</code></strong>.</li>
-<li>The <code>NA</code> values are stored as an <code>NaN</code> variant
-in the file.</li>
-<li>When read back, <code>h5_read()</code> restores them as
-<code>numeric</code> vectors with <code>NA</code>.</li>
+<li>If an integer or logical vector contains <code>NA</code>, it is <strong>automatically promoted to <code>float64</code></strong>.</li>
+<li>The <code>NA</code> values are stored as an <code>NaN</code> variant in the file.</li>
+<li>When read back, <code>h5_read()</code> restores them as <code>numeric</code> vectors with <code>NA</code>.</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Integer vector with NO missing values -&gt; Automatic optimal type (uint8)</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;safe/ints&quot;</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">h5_typeof</span>(file, <span class="st">&quot;safe/ints&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uint8&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co"># Integer vector WITH missing values -&gt; Promoted to float64</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="cn">NA</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;safe/ints_na&quot;</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="fu">h5_typeof</span>(file, <span class="st">&quot;safe/ints_na&quot;</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;float64&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Integer vector with NO missing values -&gt; Automatic optimal type (uint8)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(1L, 2L, 3L), file, <span class="st">&quot;safe/ints&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_typeof</span>(file, <span class="st">&quot;safe/ints&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uint8&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Integer vector WITH missing values -&gt; Promoted to float64</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(1L, <span class="cn">NA</span>, 3L), file, <span class="st">&quot;safe/ints_na&quot;</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_typeof</span>(file, <span class="st">&quot;safe/ints_na&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;float64&quot;</span></span></code></pre></div>
 </div>
 <div id="forcing-specific-types" class="section level3">
 <h3>Forcing Specific Types</h3>
-<p>If you know your data range fits into a smaller type (e.g.,
-<code>int8</code>, <code>uint16</code>), you can use the <code>as</code>
-argument to force a specific storage type.</p>
-<p><em>Warning: If you force an integer type on data containing
-<code>NA</code> or values outside the integer type’s range then
-<code>h5lite</code> will throw an error.</em></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Store small integers as 8-bit signed integers</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">100</span>), file, <span class="st">&quot;small_ints&quot;</span>, <span class="at">as =</span> <span class="st">&quot;int8&quot;</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Store logicals as 8-bit unsigned integers</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), file, <span class="st">&quot;bools&quot;</span>, <span class="at">as =</span> <span class="st">&quot;uint8&quot;</span>)</span></code></pre></div>
+<p>If you know your data range fits into a smaller type (e.g., <code>int8</code>, <code>uint16</code>), you can use the <code>as</code> argument to force a specific storage type.</p>
+<p><em>Warning: If you force an integer type on data containing <code>NA</code> or values outside the integer type’s range then <code>h5lite</code> will throw an error.</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store small integers as 8-bit signed integers</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">100</span>), file, <span class="st">&quot;small_ints&quot;</span>, <span class="at">as =</span> <span class="st">&quot;int8&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Store logicals as 8-bit unsigned integers</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), file, <span class="st">&quot;bools&quot;</span>, <span class="at">as =</span> <span class="st">&quot;uint8&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="character-vectors-strings" class="section level2">
 <h2>Character Vectors (Strings)</h2>
-<p>HDF5 supports two primary methods for storing strings:
-<strong>Variable-Length</strong> and <strong>Fixed-Length</strong>.</p>
+<p>HDF5 supports two primary methods for storing strings: <strong>Variable-Length</strong> and <strong>Fixed-Length</strong>.</p>
 <div id="automatic-type-selection-1" class="section level3">
 <h3>Automatic Type Selection</h3>
-<p>By default (<code>as = &quot;auto&quot;</code>), <code>h5lite</code> chooses
-the most efficient string representation:</p>
+<p>By default (<code>as = &quot;auto&quot;</code>), <code>h5lite</code> chooses the most efficient string representation:</p>
 <ul>
-<li>If the vector contains <code>NA</code>, it uses
-<strong>Variable-Length UTF-8</strong> (which natively supports missing
-values).</li>
-<li>If there are no missing values and the strings are relatively short
-and consistent in length, it uses <strong>Fixed-Length UTF-8</strong> to
-allow for compression and faster access.</li>
+<li>If the vector contains <code>NA</code>, it uses <strong>Variable-Length UTF-8</strong> (which natively supports missing values).</li>
+<li>If there are no missing values and the strings are relatively short and consistent in length, it uses <strong>Fixed-Length UTF-8</strong> to allow for compression and faster access.</li>
 </ul>
 </div>
 <div id="variable-length" class="section level3">
 <h3>Variable-Length</h3>
-<p>You can explicitly request variable-length storage using
-<code>as = &quot;utf8&quot;</code> or <code>as = &quot;ascii&quot;</code>.</p>
+<p>You can explicitly request variable-length storage using <code>as = &quot;utf8&quot;</code> or <code>as = &quot;ascii&quot;</code>.</p>
 <ul>
-<li><strong>Pros:</strong> Most flexible; exact memory usage per string;
-supports <code>NA</code> (stored as NULL pointers).</li>
-<li><strong>Cons:</strong> Cannot be compressed using standard HDF5
-filters; slower to read/write for extreme dataset sizes.</li>
+<li><strong>Pros:</strong> Most flexible; exact memory usage per string; supports <code>NA</code> (stored as NULL pointers).</li>
+<li><strong>Cons:</strong> The text is stored outside the dataset’s chunks, so it is not compressed. It is also slower to read and write at very large sizes.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Variable length strings (handles NA)</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable length strings (handles NA)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var&quot;</span>)</span></code></pre></div>
 </div>
 <div id="fixed-length" class="section level3">
 <h3>Fixed-Length</h3>
-<p>You can force fixed-length storage using the syntax <code>[n]</code>,
-where <code>n</code> is the number of bytes.</p>
+<p>You can force fixed-length storage using the syntax <code>[n]</code>, where <code>n</code> is the number of bytes.</p>
 <ul>
 <li><strong>Pros:</strong> Fast; allows compression.</li>
-<li><strong>Cons:</strong> Truncates strings longer than <code>n</code>;
-pads shorter strings; <strong>does not support
-<code>NA</code></strong>.</li>
+<li><strong>Cons:</strong> Truncates strings longer than <code>n</code>; pads shorter strings; <strong>does not support <code>NA</code></strong>.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Fixed length strings (10 bytes per string)</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/fixed&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[10]&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Auto-detect max length (converts to fixed length based on longest string)</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;short&quot;</span>, <span class="st">&quot;longer&quot;</span>, <span class="st">&quot;longest&quot;</span>), file, <span class="st">&quot;strings/auto_fixed&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[]&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed length strings (10 bytes per string)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/fixed&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[10]&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Auto-detect max length (converts to fixed length based on longest string)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;short&quot;</span>, <span class="st">&quot;longer&quot;</span>, <span class="st">&quot;longest&quot;</span>), file, <span class="st">&quot;strings/auto_fixed&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[]&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="compression" class="section level2">
 <h2>Compression</h2>
-<p>Compression in HDF5 requires the dataset to be “chunked”.
-<code>h5lite</code> handles chunking parameters automatically when you
-enable compression.</p>
-<p>You can configure compression using the <code>compress</code>
-argument:</p>
+<p>Vectors are compressed automatically. By default, <code>h5lite</code> uses gzip level 5 with byte shuffling, which any HDF5 software can read. Use the <code>compress</code> argument to choose a different codec:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="dv">100</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Default: gzip level 5</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed/default&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Zstandard: faster than gzip, with a similar or better ratio</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed/zstd&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;zstd-5&quot;</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Disable compression</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed/none&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p>Two details are specific to vectors:</p>
 <ul>
-<li><code>&quot;gzip-5&quot;</code> (default): Standard zlib compression at level
-5. Levels <code>&quot;gzip-1&quot;</code> through <code>&quot;gzip-9&quot;</code> are also
-supported. Safe and universally compatible.</li>
-<li><code>&quot;szip-nn&quot;</code>: Szip with Nearest Neighbor coding. Best for
-continuous, correlated, or floating-point data (e.g., time series or
-smooth gradients).</li>
-<li><code>&quot;szip-ec&quot;</code>: Szip with Entropy Coding. Best for
-uncorrelated, discrete, or categorical integer data.</li>
-<li><code>&quot;none&quot;</code>: Disables compression entirely.</li>
+<li><strong>Scalars written with <code>I()</code> are never compressed.</strong></li>
+<li><strong>Only fixed-length strings are compressed.</strong> Variable-length strings, the default when a vector contains <code>NA</code>, are stored uncompressed.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Write a large vector with max zlib compression</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="dv">100</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">h5_write</span>(x, file, <span class="st">&quot;compressed_data&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-9&quot;</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co"># Write a smooth, correlated dataset using szip Nearest Neighbor</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>smooth_data <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">1000</span>))</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="fu">h5_write</span>(smooth_data, file, <span class="st">&quot;szip_data&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;szip-nn&quot;</span>)</span></code></pre></div>
+<p><em>For the full list of codecs (Zstandard, LZ4, Blosc2, ZFP, and more), lossy compression, and tuning, see <code>vignette(&#39;compression&#39;)</code>.</em></p>
 </div>
 <div id="bit-integers" class="section level2">
 <h2>64-bit Integers</h2>
-<p>R does not natively support 64-bit integers, but the
-<code>bit64</code> package provides an <code>integer64</code> class.
-<code>h5lite</code> supports reading and writing these types directly to
-HDF5 <code>int64</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;bit64&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  val <span class="ot">&lt;-</span> bit64<span class="sc">::</span><span class="fu">as.integer64</span>(<span class="fu">c</span>(<span class="st">&quot;9223372036854775807&quot;</span>, <span class="st">&quot;-9223372036854775807&quot;</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  </span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="fu">h5_write</span>(val, file, <span class="st">&quot;huge_ints&quot;</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="fu">h5_typeof</span>(file, <span class="st">&quot;huge_ints&quot;</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  </span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  in_val <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;huge_ints&quot;</span>, <span class="at">as =</span> <span class="st">&quot;bit64&quot;</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">class</span>(in_val))</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>}</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer64&quot;</span></span></code></pre></div>
+<p>R does not natively support 64-bit integers, but the <code>bit64</code> package provides an <code>integer64</code> class. <code>h5lite</code> supports reading and writing these types directly to HDF5 <code>int64</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;bit64&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  val <span class="ot">&lt;-</span> bit64<span class="sc">::</span><span class="fu">as.integer64</span>(<span class="fu">c</span>(<span class="st">&quot;9223372036854775807&quot;</span>, <span class="st">&quot;-9223372036854775807&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">h5_write</span>(val, file, <span class="st">&quot;huge_ints&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">h5_typeof</span>(file, <span class="st">&quot;huge_ints&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  in_val <span class="ot">&lt;-</span> <span class="fu">h5_read</span>(file, <span class="st">&quot;huge_ints&quot;</span>, <span class="at">as =</span> <span class="st">&quot;bit64&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">class</span>(in_val))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer64&quot;</span></span></code></pre></div>
 </div>
 
 

@@ -12,43 +12,30 @@
 
 
 
-<title>Data Types &amp; Compression</title>
+<title>Data Types</title>
 
-<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
-// be compatible with the behavior of Pandoc < 2.8).
-document.addEventListener('DOMContentLoaded', function(e) {
-  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
-  var i, h, a;
-  for (i = 0; i < hs.length; i++) {
-    h = hs[i];
-    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
-    a = h.attributes;
-    while (a.length > 0) h.removeAttribute(a[0].name);
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-});
-</script>
-
-<style type="text/css">
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-</style>
-
-
-
-<style type="text/css">
-code {
-white-space: pre;
-}
-.sourceCode {
-overflow: visible;
-}
+  .sourceCode {
+    overflow: visible;
+  }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -64,54 +51,55 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-{ counter-reset: source-line 0; }
+  { counter-reset: source-line 0; }
 pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
+  { position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-color: #aaaaaa;
-}
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-{ }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } 
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.at { color: #7d9029; } 
-code span.bn { color: #40a070; } 
-code span.bu { color: #008000; } 
-code span.cf { color: #007020; font-weight: bold; } 
-code span.ch { color: #4070a0; } 
-code span.cn { color: #880000; } 
-code span.co { color: #60a0b0; font-style: italic; } 
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.do { color: #ba2121; font-style: italic; } 
-code span.dt { color: #902000; } 
-code span.dv { color: #40a070; } 
-code span.er { color: #ff0000; font-weight: bold; } 
-code span.ex { } 
-code span.fl { color: #40a070; } 
-code span.fu { color: #06287e; } 
-code span.im { color: #008000; font-weight: bold; } 
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.kw { color: #007020; font-weight: bold; } 
-code span.op { color: #666666; } 
-code span.ot { color: #007020; } 
-code span.pp { color: #bc7a00; } 
-code span.sc { color: #4070a0; } 
-code span.ss { color: #bb6688; } 
-code span.st { color: #4070a0; } 
-code span.va { color: #19177c; } 
-code span.vs { color: #4070a0; } 
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -145,187 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -337,28 +145,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Data Types &amp; Compression</h1>
+<h1 class="title toc-ignore">Data Types</h1>
 
 
 
-<p><code>h5lite</code> is designed to seamlessly map R’s diverse data
-structures to HDF5’s portable format. This vignette explains the
-supported R data types, how <code>h5lite</code> writes them to HDF5, and
-how you can precisely control data types and compression when
-needed.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span></code></pre></div>
+<p><code>h5lite</code> is designed to seamlessly map R’s diverse data structures to HDF5’s portable format. This vignette explains the supported R data types, how <code>h5lite</code> writes them to HDF5, and how you can precisely control data types when needed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(h5lite)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</span></code></pre></div>
 <div id="supported-data-types" class="section level2">
 <h2>Supported Data Types</h2>
-<p><code>h5lite</code> supports reading and writing a wide range of R
-data types. The table below lists the default mapping when writing to
-HDF5.</p>
+<p><code>h5lite</code> supports reading and writing a wide range of R data types. The table below lists the default mapping when writing to HDF5.</p>
 <table>
-<colgroup>
-<col width="18%" />
-<col width="21%" />
-<col width="60%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">R Data Type</th>
@@ -370,14 +167,12 @@ HDF5.</p>
 <tr class="odd">
 <td align="left"><strong>Numeric</strong></td>
 <td align="left"><em>variable</em></td>
-<td align="left">Selects optimal type: <code>uint8</code>,
-<code>float32</code>, etc.</td>
+<td align="left">Selects optimal type: <code>uint8</code>, <code>float32</code>, etc.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>Logical</strong></td>
 <td align="left"><code>H5T_STD_U8LE</code></td>
-<td align="left">Stored as 0 (FALSE) or 1 (TRUE)
-(<code>uint8</code>).</td>
+<td align="left">Stored as 0 (FALSE) or 1 (TRUE) (<code>uint8</code>).</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>Character</strong></td>
@@ -402,14 +197,12 @@ HDF5.</p>
 <tr class="odd">
 <td align="left"><strong>integer64</strong></td>
 <td align="left"><code>H5T_STD_I64LE</code></td>
-<td align="left">64-bit signed integers via <code>bit64</code>
-package.</td>
+<td align="left">64-bit signed integers via <code>bit64</code> package.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>POSIXt</strong></td>
 <td align="left"><code>H5T_STRING</code></td>
-<td align="left">ISO 8601 string
-(<code>YYYY-MM-DDTHH:MM:SSZ</code>).</td>
+<td align="left">ISO 8601 string in UTC (<code>YYYY-MM-DDTHH:MM:SSZ</code>).</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>List</strong></td>
@@ -431,277 +224,177 @@ package.</td>
 </div>
 <div id="dimensions-scalars-vectors-and-arrays" class="section level2">
 <h2>Dimensions: Scalars, Vectors, and Arrays</h2>
-<p>Atomic data types (Integer, integer64, Double, Logical, Character,
-Complex, Raw, and POSIXt) can be written to HDF5 as scalars, 1D vectors,
-or N-dimensional arrays.</p>
+<p>Atomic data types (Integer, integer64, Double, Logical, Character, Complex, Raw, and POSIXt) can be written to HDF5 as scalars, 1D vectors, or N-dimensional arrays.</p>
 <ul>
-<li><strong>Scalars:</strong> To write a single value as a true HDF5
-scalar (0 dimensions), you must wrap the value in <code>I()</code>.</li>
-<li><strong>Vectors:</strong> Standard R vectors are written as 1D
-arrays (Simple Dataspace with rank 1).</li>
-<li><strong>Arrays/Matrices:</strong> R objects with <code>dim</code>
-attributes are written as N-dimensional datasets, preserving their
-shape.</li>
+<li><strong>Scalars:</strong> To write a single value as a true HDF5 scalar (0 dimensions), you must wrap the value in <code>I()</code>.</li>
+<li><strong>Vectors:</strong> Standard R vectors are written as 1D arrays (Simple Dataspace with rank 1).</li>
+<li><strong>Arrays/Matrices:</strong> R objects with <code>dim</code> attributes are written as N-dimensional datasets, preserving their shape.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># 1. Scalar (0 dims)</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">I</span>(<span class="dv">42</span>), file, <span class="st">&quot;structure/scalar&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># 2. Vector (1 dim)</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), file, <span class="st">&quot;structure/vector&quot;</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># 3. Matrix (2 dims)</span></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>), file, <span class="st">&quot;structure/matrix&quot;</span>)</span></code></pre></div>
-<p><em>For more complex dimensional structures, refer to
-<code>vignette(&#39;matrices&#39;)</code>.</em></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Scalar (0 dims)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">I</span>(<span class="dv">42</span>), file, <span class="st">&quot;structure/scalar&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Vector (1 dim)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), file, <span class="st">&quot;structure/vector&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Matrix (2 dims)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>), file, <span class="st">&quot;structure/matrix&quot;</span>)</span></code></pre></div>
+<p><em>For more complex dimensional structures, refer to <code>vignette(&#39;matrices&#39;)</code>.</em></p>
 </div>
 <div id="numeric-data" class="section level2">
 <h2>Numeric Data</h2>
-<p>R uses 32-bit integers and 64-bit doubles. When writing with
-<code>as = &quot;auto&quot;</code>, <code>h5lite</code> analyzes the range of your
-data to select the most compact HDF5 type.</p>
+<p>R uses 32-bit integers and 64-bit doubles. When writing with <code>as = &quot;auto&quot;</code>, <code>h5lite</code> analyzes the range of your data to select the most compact HDF5 type.</p>
 <ul>
-<li><strong>Default:</strong> Selects optimal type based on range of
-values.</li>
-<li><strong>With NA:</strong> <code>float64</code>
-(<code>H5T_IEEE_F64LE</code>)</li>
-<li><strong>Fractional Values:</strong> Double-precision vectors with
-fractional values default to <code>float64</code>.</li>
-<li><strong>Coercion:</strong> You can override this using
-<code>int[8|16|32|64]</code>, <code>uint[8|16|32|64]</code>,
-<code>float[16|32|64]</code>, or <code>bfloat16</code>.</li>
+<li><strong>Default:</strong> Selects optimal type based on range of values.</li>
+<li><strong>With NA:</strong> <code>float64</code> (<code>H5T_IEEE_F64LE</code>)</li>
+<li><strong>Fractional Values:</strong> Double-precision vectors with fractional values default to <code>float64</code>.</li>
+<li><strong>Coercion:</strong> You can override this using <code>int[8|16|32|64]</code>, <code>uint[8|16|32|64]</code>, <code>float[16|32|64]</code>, or <code>bfloat16</code>.</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Integers between 0 and 255 (uint8)</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="dv">2</span><span class="dt">L</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;integers/small&quot;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Integers with NA -&gt; float64</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="dt">L</span>, <span class="cn">NA</span>, <span class="dv">3</span><span class="dt">L</span>), file, <span class="st">&quot;integers/with_na&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co"># Force larger type (int16)</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, file, <span class="st">&quot;integers/short&quot;</span>, <span class="at">as =</span> <span class="st">&quot;int16&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Integers between 0 and 255 (uint8)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(1L, 2L, 3L), file, <span class="st">&quot;integers/small&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Integers with NA -&gt; float64</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(1L, <span class="cn">NA</span>, 3L), file, <span class="st">&quot;integers/with_na&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Force larger type (int16)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, file, <span class="st">&quot;integers/short&quot;</span>, <span class="at">as =</span> <span class="st">&quot;int16&quot;</span>)</span></code></pre></div>
 </div>
 <div id="bit-integers-integer64" class="section level2">
 <h2>64-bit Integers (<code>integer64</code>)</h2>
 <ul>
-<li><strong>Default:</strong> <code>int64</code>
-(<code>H5T_STD_I64LE</code>)</li>
+<li><strong>Default:</strong> <code>int64</code> (<code>H5T_STD_I64LE</code>)</li>
 <li><strong>Coercion:</strong> none</li>
 </ul>
-<p>R does not natively support 64-bit integers, but <code>h5lite</code>
-supports reading and writing them via the <code>bit64</code>
-package.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;bit64&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  val <span class="ot">&lt;-</span> bit64<span class="sc">::</span><span class="fu">as.integer64</span>(<span class="fu">c</span>(<span class="st">&quot;9223372036854775807&quot;</span>, <span class="st">&quot;-9223372036854775807&quot;</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">h5_write</span>(val, file, <span class="st">&quot;integers/int64&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>R does not natively support 64-bit integers, but <code>h5lite</code> supports reading and writing them via the <code>bit64</code> package.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;bit64&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  val <span class="ot">&lt;-</span> bit64<span class="sc">::</span><span class="fu">as.integer64</span>(<span class="fu">c</span>(<span class="st">&quot;9223372036854775807&quot;</span>, <span class="st">&quot;-9223372036854775807&quot;</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">h5_write</span>(val, file, <span class="st">&quot;integers/int64&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="double-numeric-data" class="section level2">
 <h2>Double (Numeric) Data</h2>
 <p>R’s default numeric type is double-precision.</p>
 <ul>
-<li><strong>Default:</strong> <code>float64</code>
-(<code>H5T_IEEE_F64LE</code>)</li>
-<li><strong>Coercion:</strong> <code>int[8|16|32|64]</code>,
-<code>uint[8|16|32|64]</code>, <code>float[16|32|64]</code>, or
-<code>bfloat16</code></li>
+<li><strong>Default:</strong> <code>float64</code> (<code>H5T_IEEE_F64LE</code>)</li>
+<li><strong>Coercion:</strong> <code>int[8|16|32|64]</code>, <code>uint[8|16|32|64]</code>, <code>float[16|32|64]</code>, or <code>bfloat16</code></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># Default (float64)</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">h5_write</span>(data, file, <span class="st">&quot;doubles/default&quot;</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># Single Precision (float32) - Saves 50% space</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="fu">h5_write</span>(data, file, <span class="st">&quot;doubles/float32&quot;</span>, <span class="at">as =</span> <span class="st">&quot;float32&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Default (float64)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(data, file, <span class="st">&quot;doubles/default&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Single Precision (float32) - Saves 50% space</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(data, file, <span class="st">&quot;doubles/float32&quot;</span>, <span class="at">as =</span> <span class="st">&quot;float32&quot;</span>)</span></code></pre></div>
 </div>
 <div id="logical-data" class="section level2">
 <h2>Logical Data</h2>
 <ul>
-<li><strong>Default:</strong> <code>uint8</code>
-(<code>H5T_STD_U8LE</code>)</li>
-<li><strong>With NA:</strong> <code>float64</code>
-(<code>H5T_IEEE_F64LE</code>)</li>
-<li><strong>Coercion:</strong> <code>int[8|16|32|64]</code>,
-<code>uint[8|16|32|64]</code>, <code>float[16|32|64]</code>, or
-<code>bfloat16</code></li>
+<li><strong>Default:</strong> <code>uint8</code> (<code>H5T_STD_U8LE</code>)</li>
+<li><strong>With NA:</strong> <code>float64</code> (<code>H5T_IEEE_F64LE</code>)</li>
+<li><strong>Coercion:</strong> <code>int[8|16|32|64]</code>, <code>uint[8|16|32|64]</code>, <code>float[16|32|64]</code>, or <code>bfloat16</code></li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>bools <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">h5_write</span>(bools, file, <span class="st">&quot;logicals/packed&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bools <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(bools, file, <span class="st">&quot;logicals/packed&quot;</span>)</span></code></pre></div>
 </div>
 <div id="character-data" class="section level2">
 <h2>Character Data</h2>
-<p>HDF5 supports two methods for storing strings. By default
-(<code>as = &quot;auto&quot;</code>), <code>h5lite</code> chooses the best
-approach:</p>
+<p>HDF5 supports two methods for storing strings. By default (<code>as = &quot;auto&quot;</code>), <code>h5lite</code> chooses the best approach:</p>
 <ul>
-<li><strong>Variable-Length:</strong> Used if the vector contains
-<code>NA</code> or if string lengths are highly inconsistent.</li>
-<li><strong>Fixed-Length:</strong> Used for short, consistent strings
-without <code>NA</code> to allow for compression.</li>
+<li><strong>Variable-Length:</strong> Used if the vector contains <code>NA</code> or if string lengths are highly inconsistent.</li>
+<li><strong>Fixed-Length:</strong> Used for short, consistent strings without <code>NA</code> to allow for compression.</li>
 </ul>
 <div id="variable-length" class="section level3">
 <h3><strong>Variable-Length:</strong></h3>
-<p>Explicitly requested with <code>as = &quot;utf8&quot;</code> or
-<code>as = &quot;ascii&quot;</code>.</p>
+<p>Explicitly requested with <code>as = &quot;utf8&quot;</code> or <code>as = &quot;ascii&quot;</code>.</p>
 <ul>
-<li>Compressible: <strong>NO</strong></li>
+<li>Compressible: <strong>NO</strong> (the text is stored outside the dataset’s chunks)</li>
 <li>Handles <code>NA</code>: <strong>YES</strong></li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># UTF-8 variable length</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var_utf8&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># ASCII variable length</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/var_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UTF-8 variable length</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="cn">NA</span>), file, <span class="st">&quot;strings/var_utf8&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ASCII variable length</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/var_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii&quot;</span>)</span></code></pre></div>
 </div>
 <div id="fixed-length" class="section level3">
 <h3><strong>Fixed-Length:</strong></h3>
-<p>Use <code>as = &quot;ascii[10]&quot;</code> / <code>as = &quot;utf8[10]&quot;</code>
-(explicit size=10) or <code>as = &quot;ascii[]&quot;</code> /
-<code>as = &quot;utf8[]&quot;</code> (auto-detect max length).</p>
+<p>Use <code>as = &quot;ascii[10]&quot;</code> / <code>as = &quot;utf8[10]&quot;</code> (explicit size=10) or <code>as = &quot;ascii[]&quot;</code> / <code>as = &quot;utf8[]&quot;</code> (auto-detect max length).</p>
 <ul>
 <li>Compressible: <strong>YES</strong></li>
 <li>Handles <code>NA</code>: <strong>NO</strong></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># UTF-8 auto-detected fixed length</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>), file, <span class="st">&quot;strings/fixed_utf8&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># ASCII fixed length (1 byte)</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/fixed_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[1]&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UTF-8 auto-detected fixed length</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>), file, <span class="st">&quot;strings/fixed_utf8&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ASCII fixed length (1 byte)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), file, <span class="st">&quot;strings/fixed_ascii&quot;</span>, <span class="at">as =</span> <span class="st">&quot;ascii[1]&quot;</span>)</span></code></pre></div>
 <blockquote>
-<p><strong>Technical Note:</strong> <code>h5lite</code> uses
-<code>H5T_C_S1</code> for all strings, and <code>H5T_STR_NULLTERM</code>
-for all fixed length strings.</p>
+<p><strong>Technical Note:</strong> <code>h5lite</code> uses <code>H5T_C_S1</code> for all strings, and <code>H5T_STR_NULLTERM</code> for all fixed length strings.</p>
 </blockquote>
 </div>
 </div>
 <div id="dates-and-times-posixt" class="section level2">
 <h2>Dates and Times (<code>POSIXt</code>)</h2>
-<p>R date-time objects (<code>POSIXct</code> / <code>POSIXlt</code>) are
-stored as <strong>Strings</strong> in ISO 8601 format
-(<code>YYYY-MM-DDTHH:MM:SSZ</code>). This ensures maximum portability
-with other languages and HDF5 tools that do not share R’s specific
-epoch-based integer representation.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>now <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">h5_write</span>(now, file, <span class="st">&quot;datetime/iso8601&quot;</span>)</span></code></pre></div>
+<p>R date-time objects (<code>POSIXct</code> / <code>POSIXlt</code>) are stored as <strong>Strings</strong> in ISO 8601 format, converted to UTC (<code>YYYY-MM-DDTHH:MM:SSZ</code>). Fractional seconds are kept, to the microsecond, when present (for example <code>2024-01-01T12:00:00.75Z</code>). This ensures maximum portability with other languages and HDF5 tools that do not share R’s specific epoch-based integer representation.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>now <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(now, file, <span class="st">&quot;datetime/iso8601&quot;</span>)</span></code></pre></div>
 </div>
 <div id="complex-data" class="section level2">
 <h2>Complex Data</h2>
-<p>R complex numbers are written using the new complex floating-point
-type introduced in HDF5 2.0.0 (<code>H5T_COMPLEX_IEEE_F64LE</code>).</p>
-<p><strong>Compatibility Warning:</strong> This data type for complex
-numbers is a feature specific to HDF5 version 2.0+. Datasets written
-with this type generally cannot be read by HDF5 readers built against
-older versions of the library (e.g., HDF5 1.10 or 1.12). Ensure that any
-downstream tools or libraries used to read these files are updated to
-support HDF5 2.0 standards.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">2</span><span class="dt">i</span>, <span class="dv">3</span><span class="sc">+</span><span class="dv">4</span><span class="dt">i</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">h5_write</span>(comp, file, <span class="st">&quot;complex_data&quot;</span>)</span></code></pre></div>
+<p>R complex numbers are written using the new complex floating-point type introduced in HDF5 2.0.0 (<code>H5T_COMPLEX_IEEE_F64LE</code>).</p>
+<p><strong>Compatibility Warning:</strong> This data type for complex numbers is a feature specific to HDF5 version 2.0+. Datasets written with this type generally cannot be read by HDF5 readers built against older versions of the library (e.g., HDF5 1.10 or 1.12). Ensure that any downstream tools or libraries used to read these files are updated to support HDF5 2.0 standards.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span>2i, <span class="dv">3</span><span class="sc">+</span>4i)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(comp, file, <span class="st">&quot;complex_data&quot;</span>)</span></code></pre></div>
 </div>
 <div id="raw-data" class="section level2">
 <h2>Raw Data</h2>
-<p>Raw vectors (bytes) are stored as HDF5 <code>OPAQUE</code> types.
-This is ideal for storing binary blobs, images, or serialized objects
-where you need to preserve the exact byte sequence without
-interpretation.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>raw_vec <span class="ot">&lt;-</span> <span class="fu">as.raw</span>(<span class="fu">c</span>(<span class="dv">0x01</span>, <span class="dv">0xFF</span>, <span class="dv">0x1A</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">h5_write</span>(raw_vec, file, <span class="st">&quot;binary_blob&quot;</span>)</span></code></pre></div>
+<p>Raw vectors (bytes) are stored as HDF5 <code>OPAQUE</code> types. This is ideal for storing binary blobs, images, or serialized objects where you need to preserve the exact byte sequence without interpretation.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>raw_vec <span class="ot">&lt;-</span> <span class="fu">as.raw</span>(<span class="fu">c</span>(<span class="dv">0x01</span>, <span class="dv">0xFF</span>, <span class="dv">0x1A</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(raw_vec, file, <span class="st">&quot;binary_blob&quot;</span>)</span></code></pre></div>
 </div>
 <div id="factors" class="section level2">
 <h2>Factors</h2>
-<p>R Factors are stored as HDF5 <code>ENUM</code> types. This maps the
-integer codes to the factor levels (labels) efficiently within the file
-header, ensuring the labels are preserved without duplicating string
-data for every element.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>fac <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;high&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;low&quot;</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">h5_write</span>(fac, file, <span class="st">&quot;categorical&quot;</span>)</span></code></pre></div>
+<p>R Factors are stored as HDF5 <code>ENUM</code> types. This maps the integer codes to the factor levels (labels) efficiently within the file header, ensuring the labels are preserved without duplicating string data for every element.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fac <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;high&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;low&quot;</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(fac, file, <span class="st">&quot;categorical&quot;</span>)</span></code></pre></div>
 </div>
 <div id="lists" class="section level2">
 <h2>Lists</h2>
-<p>R lists are mapped to HDF5 <strong>Groups</strong>. Since lists are
-recursive containers, <code>h5lite</code> walks the list and creates a
-dataset (or subgroup) for every element found. You can use
-<code>as = c(&quot;element_name&quot; = &quot;skip&quot;)</code> to exclude specific
-items.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">meta =</span> <span class="fu">list</span>(<span class="at">valid =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">h5_write</span>(my_list, file, <span class="st">&quot;types/list&quot;</span>)</span></code></pre></div>
+<p>R lists are mapped to HDF5 <strong>Groups</strong>. Since lists are recursive containers, <code>h5lite</code> walks the list and creates a dataset (or subgroup) for every element found. You can use <code>as = c(&quot;element_name&quot; = &quot;skip&quot;)</code> to exclude specific items.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">meta =</span> <span class="fu">list</span>(<span class="at">valid =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(my_list, file, <span class="st">&quot;types/list&quot;</span>)</span></code></pre></div>
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data Frames</h2>
-<p>Data Frames are stored as HDF5 <strong>Compound</strong> types
-(tables). This ensures that rows are kept together in memory. You can
-use the <code>as</code> argument to specify the type of individual
-columns.</p>
-<p><em>For a comprehensive guide, see
-<code>vignette(&#39;data-frames&#39;)</code>.</em></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">c</span>(<span class="fl">10.5</span>, <span class="fl">20.2</span>, <span class="fl">15.0</span>, <span class="fl">9.8</span>, <span class="fl">30.1</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>)</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co"># 1. &#39;id&#39; coerced to uint16</span></span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co"># 2. &#39;score&#39; coerced to float32</span></span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">h5_write</span>(df, file, <span class="st">&quot;types/dataframe&quot;</span>, <span class="at">as =</span> <span class="fu">c</span>(</span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="st">&quot;id&quot;</span>    <span class="ot">=</span> <span class="st">&quot;uint16&quot;</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="st">&quot;score&quot;</span> <span class="ot">=</span> <span class="st">&quot;float32&quot;</span></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>))</span></code></pre></div>
+<p>Data Frames are stored as HDF5 <strong>Compound</strong> types (tables). This ensures that rows are kept together in memory. You can use the <code>as</code> argument to specify the type of individual columns.</p>
+<p><em>For a comprehensive guide, see <code>vignette(&#39;data-frames&#39;)</code>.</em></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">c</span>(<span class="fl">10.5</span>, <span class="fl">20.2</span>, <span class="fl">15.0</span>, <span class="fl">9.8</span>, <span class="fl">30.1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. &#39;id&#39; coerced to uint16</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. &#39;score&#39; coerced to float32</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(df, file, <span class="st">&quot;types/dataframe&quot;</span>, <span class="at">as =</span> <span class="fu">c</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;id&quot;</span>    <span class="ot">=</span> <span class="st">&quot;uint16&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;score&quot;</span> <span class="ot">=</span> <span class="st">&quot;float32&quot;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 </div>
 <div id="null" class="section level2">
 <h2>NULL</h2>
-<p>The <code>NULL</code> object in R is mapped to a dataset with a
-<strong>NULL Dataspace</strong> (<code>H5S_NULL</code>). This creates a
-dataset that exists in the file structure but contains no data elements
-and consumes no storage space.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="cn">NULL</span>, file, <span class="st">&quot;placeholders/empty_slot&quot;</span>)</span></code></pre></div>
+<p>The <code>NULL</code> object in R is mapped to a dataset with a <strong>NULL Dataspace</strong> (<code>H5S_NULL</code>). This creates a dataset that exists in the file structure but contains no data elements and consumes no storage space.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="cn">NULL</span>, file, <span class="st">&quot;placeholders/empty_slot&quot;</span>)</span></code></pre></div>
 </div>
-<div id="compression" class="section level2">
-<h2>Compression</h2>
-<p>HDF5 supports transparent data compression using the zlib (gzip) and
-szip algorithms. You can control the compression behavior using the
-<code>compress</code> argument.</p>
+<div id="data-types-and-compression" class="section level2">
+<h2>Data Types and Compression</h2>
+<p>Every dataset is compressed by default (gzip level 5 with byte shuffling), and the storage type you choose affects how well it compresses:</p>
 <ul>
-<li><strong><code>&quot;gzip-5&quot;</code></strong> (default): Standard zlib
-compression at level 5. Levels <code>&quot;gzip-1&quot;</code> through
-<code>&quot;gzip-9&quot;</code> are also supported. Safe and universally
-compatible.</li>
-<li><strong><code>&quot;szip-nn&quot;</code></strong>: Szip with Nearest Neighbor
-coding. Best for continuous, correlated, or floating-point data (e.g.,
-time series or smooth gradients).</li>
-<li><strong><code>&quot;szip-ec&quot;</code></strong>: Szip with Entropy Coding.
-Best for uncorrelated, discrete, or categorical integer data.</li>
-<li><strong><code>&quot;none&quot;</code></strong>: Disables compression
-entirely.</li>
+<li><strong>Smaller types mean less data.</strong> Storing doubles as <code>float32</code> halves their size before compression even starts. The compact integer types that <code>as = &quot;auto&quot;</code> picks save space the same way.</li>
+<li><strong>Fixed-length strings compress. Variable-length strings don’t.</strong> If text makes up much of your data, use <code>as = &quot;utf8[]&quot;</code> when there are no <code>NA</code> values.</li>
+<li><strong>ZFP needs 32- or 64-bit numeric types.</strong> If you use the ZFP codec on whole numbers, set <code>as = &quot;int32&quot;</code>, <code>&quot;int64&quot;</code>, <code>&quot;float32&quot;</code>, or <code>&quot;float64&quot;</code> explicitly. Otherwise <code>h5lite</code> falls back to gzip.</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Maximum zlib compression</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;data/max&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;gzip-9&quot;</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co"># Szip Entropy Coding for discrete integer data</span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>), file, <span class="st">&quot;data/szip&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;szip-ec&quot;</span>)</span></code></pre></div>
-<div id="the-shuffle-filter" class="section level3">
-<h3>The Shuffle Filter</h3>
-<p>When <code>gzip</code> compression is enabled, <code>h5lite</code>
-automatically applies the HDF5 <strong>Byte Shuffle Filter</strong>
-before the data is compressed. The Shuffle Filter does not compress data
-itself; rather, it rearranges the byte stream to make it more
-compressible by zlib.</p>
-<p>It works by separating the bytes of each value by their significance.
-For example, in a 4-byte integer array:</p>
-<ol style="list-style-type: decimal">
-<li>All the 1st bytes (least significant) are grouped together.</li>
-<li>All the 2nd bytes are grouped together.</li>
-<li>And so on.</li>
-</ol>
-<p><strong>Why this helps:</strong></p>
-<ul>
-<li><strong>Integers:</strong> Small integers often have many
-zero-padding bytes. The shuffle filter groups these zeros into long
-runs, which zlib compresses extremely efficiently. This allows
-<code>int32</code> data to compress nearly as well as <code>int8</code>
-data if the values are small.</li>
-<li><strong>Doubles:</strong> Floating point numbers often share the
-same exponent bytes if they are in a similar range. The shuffle filter
-groups these identical exponent bytes, creating repetitive patterns that
-zlib can compress.</li>
-</ul>
-</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">h5_write</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>), file, <span class="st">&quot;compressed/zstd&quot;</span>, <span class="at">as =</span> <span class="st">&quot;float32&quot;</span>, <span class="at">compress =</span> <span class="st">&quot;zstd-5&quot;</span>)</span></code></pre></div>
+<p><em>For codec choices, lossy compression, chunk sizing, and inspecting the results, see <code>vignette(&#39;compression&#39;)</code>.</em></p>
 </div>
 
 

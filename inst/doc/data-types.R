@@ -89,11 +89,7 @@ h5_write(df, file, "types/dataframe", as = c(
 h5_write(NULL, file, "placeholders/empty_slot")
 
 ## -----------------------------------------------------------------------------
-# Maximum zlib compression
-h5_write(rnorm(1000), file, "data/max", compress = "gzip-9")
-
-# Szip Entropy Coding for discrete integer data
-h5_write(sample(1:5, 1000, replace = TRUE), file, "data/szip", compress = "szip-ec")
+h5_write(rnorm(1000), file, "compressed/zstd", as = "float32", compress = "zstd-5")
 
 ## ----include = FALSE----------------------------------------------------------
 unlink(file)

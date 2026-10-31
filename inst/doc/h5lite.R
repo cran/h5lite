@@ -56,3 +56,14 @@ h5_ls(file)
 # Print structure tree (like R's str())
 h5_str(file)
 
+## -----------------------------------------------------------------------------
+readings <- round(rnorm(10000, mean = 20, sd = 2), 1)
+h5_write(readings, file, "compressed", compress = "zstd-5")
+h5_inspect(file, "compressed")
+
+## -----------------------------------------------------------------------------
+h5_read(file, "compressed", start = 101, count = 5)
+
+## ----include = FALSE----------------------------------------------------------
+unlink(file)
+

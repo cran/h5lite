@@ -51,13 +51,16 @@ h5_write(c("A", "B", "C"), file, "strings/fixed", as = "ascii[10]")
 h5_write(c("short", "longer", "longest"), file, "strings/auto_fixed", as = "ascii[]")
 
 ## -----------------------------------------------------------------------------
-# Write a large vector with max zlib compression
 x <- rep(rnorm(100), 100)
-h5_write(x, file, "compressed_data", compress = "gzip-9")
 
-# Write a smooth, correlated dataset using szip Nearest Neighbor
-smooth_data <- sin(seq(0, 10, length.out = 1000))
-h5_write(smooth_data, file, "szip_data", compress = "szip-nn")
+# Default: gzip level 5
+h5_write(x, file, "compressed/default")
+
+# Zstandard: faster than gzip, with a similar or better ratio
+h5_write(x, file, "compressed/zstd", compress = "zstd-5")
+
+# Disable compression
+h5_write(x, file, "compressed/none", compress = "none")
 
 ## -----------------------------------------------------------------------------
 if (requireNamespace("bit64", quietly = TRUE)) {

@@ -47,6 +47,19 @@ h5_str(file)
 result <- h5_read(file, "cars")
 print(row.names(result))
 
+## -----------------------------------------------------------------------------
+big_df <- data.frame(
+  id    = 1:10000,
+  group = sample(c("A", "B", "C"), 10000, replace = TRUE),
+  value = rnorm(10000)
+)
+
+h5_write(big_df, file, "big_df", compress = "zstd-5", as = c(value = "float32"))
+h5_inspect(file, "big_df")
+
+## -----------------------------------------------------------------------------
+h5_read(file, "big_df", start = 501, count = 3)
+
 ## ----include=FALSE------------------------------------------------------------
 unlink(file)
 

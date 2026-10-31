@@ -41,15 +41,24 @@ data_in <- h5_read(file, "genetics/expression")
 print(data_in)
 
 ## -----------------------------------------------------------------------------
-# Large matrix of zeros (highly compressible)
+# A large, mostly-zero matrix (highly compressible)
 sparse_mat <- matrix(0, nrow = 1000, ncol = 1000)
 sparse_mat[1:10, 1:10] <- 1
 
-# Write with default compression (zlib level 5)
+# Default compression (gzip level 5)
 h5_write(sparse_mat, file, "compressed/matrix")
 
-# Write with high compression (zlib level 9)
-h5_write(sparse_mat, file, "compressed/matrix_max", compress = "gzip-9")
+# Zstandard: faster than gzip, with a similar or better ratio
+h5_write(sparse_mat, file, "compressed/matrix_zstd", compress = "zstd-5")
+
+h5_inspect(file, "compressed/matrix_zstd")
+
+## -----------------------------------------------------------------------------
+big <- matrix(1:50000, nrow = 10000, ncol = 5)
+h5_write(big, file, "big_matrix")
+
+# Read 3 rows, starting at row 5001
+h5_read(file, "big_matrix", start = 5001, count = 3)
 
 ## ----include=FALSE------------------------------------------------------------
 unlink(file)
